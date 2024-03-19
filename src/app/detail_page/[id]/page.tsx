@@ -1,7 +1,17 @@
-import React from "react";
+import React from 'react';
 
-const page = () => {
-  return <div>page</div>;
-};
+function DetailPage({
+  params,
+}: {
+  params: {
+    id: string;
+  };
+}) {
+  return (
+    <>
+      <div>test</div>
+    </>
+  );
+}
 
-export default page;
+export default DetailPage;
