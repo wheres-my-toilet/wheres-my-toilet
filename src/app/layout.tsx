@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import QueryProvider from './provider';
 import Script from 'next/script';
+import Header from '@/components/Header';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -25,7 +26,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <QueryProvider>{children}</QueryProvider>
+        <QueryProvider>
+          <Header />
+          {children}
+        </QueryProvider>
       </body>
       <Script src="https://developers.kakao.com/sdk/js/kakao.js" async />
       {/* 이 두번째 Script는 kakao map을 이용하기 위한 Script이다. appkey 부분엔 발급받은 본인의 API KEY를 입력한다. */}
