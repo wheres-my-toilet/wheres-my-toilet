@@ -15,18 +15,9 @@ interface Location {
 }
 
 export default function BasicMap() {
-  // 수파베이스로부터 지도 좌표 데이터 가져와서 저장하기
   const [locationInfoData, setLocationInfoData] = useState<Location[] | null>([]);
-
   const [selectSee, setSelectSee] = useState<string>('시 선택');
   const [selectGunGue, setSelectGunGue] = useState<string>('군 /구 선택');
-
-  const onchangeSelectSee = (event: ChangeEvent<HTMLSelectElement>) => {
-    setSelectSee(event.target.value);
-  };
-  const onchangeSelectGunGue = (event: ChangeEvent<HTMLSelectElement>) => {
-    setSelectGunGue(event.target.value);
-  };
 
   async function getData() {
     const { data, error } = await supabase.from('toilet_location').select(' * ');
@@ -40,8 +31,48 @@ export default function BasicMap() {
   }, []);
 
   const filterData = locationInfoData?.filter(
-    (data) => data.toilet_address?.trim().includes(selectSee) && data.toilet_address?.includes(selectGunGue),
+    (data) => data.toilet_address?.trim().includes(selectSee) && data.toilet_address?.trim().includes(selectGunGue),
   );
+
+  // selectState 로 저장될 center 좌표가 담길 state 선언
+  const [selectState, setSelectState] = useState({
+    center: { lat: 33.450701, lng: 126.570667 },
+    isPanto: false,
+  });
+
+  const onChangeState = (select: string) => {
+    switch (select) {
+      case '서울특별시':
+        setSelectState({ center: { lat: 37.715133, lng: 126.9779692 }, isPanto: true });
+        break;
+
+      case '대구광역시':
+        setSelectState({ center: { lat: 35.8714354, lng: 128.601445 }, isPanto: true });
+        break;
+
+      default:
+        setSelectState({ center: { lat: 33.450701, lng: 126.570667 }, isPanto: true });
+        break;
+    }
+  };
+
+  const onChangeState2 = (select2: string) => {
+    switch (select2) {
+      case '군위군':
+        setSelectState({ center: { lat: 36.2428355, lng: 128.5727702 }, isPanto: true });
+        break;
+    }
+  };
+
+  const onchangeSelectSee = (event: ChangeEvent<HTMLSelectElement>) => {
+    setSelectSee(event.target.value);
+    onChangeState(event.target.value);
+  };
+
+  const onchangeSelectGunGue = (event: ChangeEvent<HTMLSelectElement>) => {
+    setSelectGunGue(event.target.value);
+    onChangeState2(event.target.value);
+  };
 
   return (
     <>
@@ -79,11 +110,8 @@ export default function BasicMap() {
 
         <Map // 지도를 표시할 Container
           id="map"
-          center={{
-            // 지도의 중심좌표
-            lat: 37.5286,
-            lng: 127.1264,
-          }}
+          center={selectState.center}
+          isPanto={selectState.isPanto}
           style={{
             // 지도의 크기
             width: '100%',
