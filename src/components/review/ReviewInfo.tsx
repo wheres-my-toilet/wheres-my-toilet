@@ -50,11 +50,11 @@ function ReviewInfo({ id }: { id: number }) {
     if (result === 1) return `⭐`;
   };
 
-  const onClickDeleteReview = async () => {
+  const handleDeleteReview = async () => {
     // const { error } = await supabase.from('review_info').delete().eq('user_id', user);
   };
 
-  const onClickChangeReview = async (user_id: string | null) => {
+  const handleChangeReview = async (user_id: string | null) => {
     const { data, error } = await supabase
       .from('review_info')
       .update({ review_content: changeText })
@@ -99,8 +99,8 @@ function ReviewInfo({ id }: { id: number }) {
                 <div>
                   {user === info.user_id && (
                     <>
-                      <button onClick={() => onClickChangeReview(info.user_id)}>수정</button>
-                      <button onClick={onClickDeleteReview}>삭제</button>
+                      <button onClick={() => handleChangeReview(info.user_id)}>수정</button>
+                      <button onClick={handleDeleteReview}>삭제</button>
                     </>
                   )}
                 </div>

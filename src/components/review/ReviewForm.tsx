@@ -8,7 +8,8 @@ function ReviewForm({ id }: { id: number }) {
   const [toiletLocRate, setToiletLocRate] = useState(0);
   const [toiletPopRate, setToiletPopRate] = useState(0);
   const [reviewContent, setReviewContent] = useState('');
-  const onSubmitAddReview = async (e: React.FormEvent<HTMLFormElement>) => {
+
+  const handleAddReview = async (e: React.FormEvent<HTMLFormElement>) => {
     // const {
     //   data: { user },
     // } = await supabase.auth.getUser();
@@ -33,7 +34,7 @@ function ReviewForm({ id }: { id: number }) {
   return (
     <>
       <h2>사용자 리뷰</h2>
-      <form onSubmit={onSubmitAddReview}>
+      <form onSubmit={handleAddReview}>
         <label>
           청결도
           <select
@@ -88,6 +89,7 @@ function ReviewForm({ id }: { id: number }) {
         <input
           type="text"
           value={reviewContent}
+          placeholder="리뷰를 입력해주세요~"
           onChange={(e) => {
             setReviewContent(e.target.value);
           }}

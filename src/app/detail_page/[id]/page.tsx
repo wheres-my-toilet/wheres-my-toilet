@@ -16,7 +16,6 @@ function DetailPage({
 }) {
   const { id } = params;
   const [toiletLocation, setToiletLocation] = useState<Database['public']['Tables']['toilet_location']['Row']>();
-  // const { data: { user } } = await supabase.auth.getUser()
 
   useEffect(() => {
     const getToiletLocation = async () => {
