@@ -7,7 +7,7 @@ import logoImage from '../assets/images/logo.png';
 import { useUserLocationStore } from '@/shared/store/UserLocation';
 
 const Header = () => {
-  const [userAddress, setUserAddress] = useState<string>('');
+  const [userAddress, setUserAddress] = useState('');
   const { userLocation, setLocation } = useUserLocationStore();
 
   //현재 좌표 가져오기
@@ -36,7 +36,7 @@ const Header = () => {
   useEffect(() => {
     handleGetCurrentPosition();
     getAddress();
-  }, [userLocation]);
+  }, [userAddress]);
 
   return (
     <header className="flex p-5 justify-between items-center">
