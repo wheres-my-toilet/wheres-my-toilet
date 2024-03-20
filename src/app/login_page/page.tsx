@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import React from 'react';
 
 const Login = () => {
@@ -20,11 +21,11 @@ const Login = () => {
           <button>로그인하기</button>
         </form>
 
-        <div className="pt-5">
-          <p>
-            아직 회원이 아니신가요?
-            <span className="cursor-pointer">회원가입</span>
-          </p>
+        <div className="pt-5 flex gap-3">
+          <p>아직 회원이 아니신가요?</p>
+          <Link href="/signup_page" className="cursor-pointer">
+            회원가입
+          </Link>
         </div>
       </div>
     </div>

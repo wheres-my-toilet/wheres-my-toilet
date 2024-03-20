@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Signup = () => {
   return (
@@ -20,11 +21,11 @@ const Signup = () => {
           <button>회원가입하기</button>
         </form>
 
-        <div className="pt-5">
-          <p>
-            이미 회원이신가요?
-            <span className="cursor-pointer">로그인</span>
-          </p>
+        <div className="pt-5 flex gap-3">
+          <p> 이미 회원이신가요?</p>
+          <Link href="/login_page" className="cursor-pointer">
+            로그인
+          </Link>
         </div>
       </div>
     </div>
