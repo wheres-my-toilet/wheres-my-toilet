@@ -5,7 +5,7 @@ import noDoodle from '../../assets/images/etiquette_images/noDoodle.png';
 import trashBin from '../../assets/images/etiquette_images/trashBin.png';
 
 const images = [
-  { src: toilet, alt: '똥간 어디에?', width: 224, height: 34, content: '변기에 이물질은 넣지 않습니다.' },
+  { src: toilet, alt: '똥간 어디에?', width: 224, height: 34, content: '변기 물을 내립니다.' },
   { src: noSmoking, alt: '흡연 금지', width: 224, height: 34, content: '화장실 내에서 흡연은 금지됩니다.' },
   { src: noDoodle, alt: '벽에 그림 금지', width: 224, height: 34, content: '벽이나 타일에 그림을 그리지 않습니다.' },
   { src: trashBin, alt: '쓰레기통 사용', width: 224, height: 34, content: '쓰레기는 쓰레기통에 올바르게 버립니다.' },
