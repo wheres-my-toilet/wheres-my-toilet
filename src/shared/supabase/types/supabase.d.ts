@@ -21,8 +21,8 @@ export type Database = {
           review_id?: number;
           toilet_clean_rate?: number | null;
           toilet_id?: number | null;
-          toilet_loc_rate?: number | null;
-          toilet_pop_rate?: number | null;
+          toilet_loc_rate?: number;
+          toilet_pop_rate?: number;
           user_id?: number | null;
           user_nickname?: string | null;
         };
@@ -32,8 +32,8 @@ export type Database = {
           review_id?: number;
           toilet_clean_rate?: number | null;
           toilet_id?: number | null;
-          toilet_loc_rate?: number | null;
-          toilet_pop_rate?: number | null;
+          toilet_loc_rate?: number;
+          toilet_pop_rate?: number;
           user_id?: number | null;
           user_nickname?: string | null;
         };
@@ -41,7 +41,7 @@ export type Database = {
       };
       toilet_location: {
         Row: {
-          toilet_address: string | null;
+          toilet_address: string;
           toilet_baby_diaper: string | null;
           toilet_id: number;
           toilet_latitude: number;
@@ -53,8 +53,8 @@ export type Database = {
           toilet_address?: string | null;
           toilet_baby_diaper?: string | null;
           toilet_id?: number;
-          toilet_latitude?: number | null;
-          toilet_longitude?: number | null;
+          toilet_latitude?: number;
+          toilet_longitude?: number;
           toilet_name?: string | null;
           toilet_opening_hours?: string | null;
         };
@@ -62,8 +62,8 @@ export type Database = {
           toilet_address?: string | null;
           toilet_baby_diaper?: string | null;
           toilet_id?: number;
-          toilet_latitude?: number | null;
-          toilet_longitude?: number | null;
+          toilet_latitude?: number;
+          toilet_longitude?: number;
           toilet_name?: string | null;
           toilet_opening_hours?: string | null;
         };
