@@ -14,14 +14,14 @@ const Header = () => {
   const handleGetCurrentPosition = () => {
     navigator.geolocation.getCurrentPosition((position) => {
       console.log('현재 좌표 : ', position.coords.latitude, position.coords.longitude);
-      setLocation({ latitude: position.coords.latitude, longitude: position.coords.longitude });
+      setLocation({ lat: position.coords.latitude, lng: position.coords.longitude });
     });
   };
 
   //kakao rest api 위도/경도 -> 주소 변환
   const getAddress = async () => {
     const response = await fetch(
-      `https://dapi.kakao.com/v2/local/geo/coord2address.json?x=${userLocation.longitude}&y=${userLocation.latitude}`,
+      `https://dapi.kakao.com/v2/local/geo/coord2address.json?x=${userLocation.lng}&y=${userLocation.lat}`,
       {
         headers: {
           Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}`,
