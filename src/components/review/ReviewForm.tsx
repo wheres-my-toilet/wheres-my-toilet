@@ -4,9 +4,11 @@ import { review_info } from './ReviewInfo';
 import { supabase } from '@/shared/supabase/supabase';
 
 function ReviewForm({ id }: { id: number }) {
-  const [toiletCleanRate, setToiletCleanRate] = useState(0);
-  const [toiletLocRate, setToiletLocRate] = useState(0);
-  const [toiletPopRate, setToiletPopRate] = useState(0);
+  const [toiletRate, setToiletRate] = useState({
+    cleanRate: 0,
+    locationRate: 0,
+    popRate: 0,
+  });
   const [reviewContent, setReviewContent] = useState('');
 
   const handleAddReview = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -23,9 +25,9 @@ function ReviewForm({ id }: { id: number }) {
       review_content: reviewContent,
       toilet_id: id,
       user_nickname: '', // display Name 어떻게 받아올까요....
-      toilet_clean_rate: toiletCleanRate,
-      toilet_loc_rate: toiletLocRate,
-      toilet_pop_rate: toiletPopRate,
+      toilet_clean_rate: toiletRate.cleanRate,
+      toilet_loc_rate: toiletRate.locationRate,
+      toilet_pop_rate: toiletRate.popRate,
     };
 
     // const { data, error } = await supabase.from('review_info').update(newReview).eq('user_id', user?.email).select();
@@ -38,10 +40,10 @@ function ReviewForm({ id }: { id: number }) {
         <label>
           청결도
           <select
-            value={toiletCleanRate}
+            value={toiletRate.cleanRate}
             onChange={(e) => {
               const { value } = e.target;
-              setToiletCleanRate(Number(value));
+              setToiletRate((prev) => ({ ...prev, cleanRate: +value }));
             }}
           >
             <option>점수를 주세요</option>
@@ -55,10 +57,10 @@ function ReviewForm({ id }: { id: number }) {
         <label>
           위치
           <select
-            value={toiletLocRate}
+            value={toiletRate.locationRate}
             onChange={(e) => {
               const { value } = e.target;
-              setToiletLocRate(Number(value));
+              setToiletRate((prev) => ({ ...prev, locationRate: +value }));
             }}
           >
             <option>위치 점수를&nbsp;주세요</option>
@@ -72,10 +74,10 @@ function ReviewForm({ id }: { id: number }) {
         <label>
           인구밀도
           <select
-            value={toiletPopRate}
+            value={toiletRate.popRate}
             onChange={(e) => {
               const { value } = e.target;
-              setToiletPopRate(Number(value));
+              setToiletRate((prev) => ({ ...prev, popRate: +value }));
             }}
           >
             <option>인구밀도 정도를&nbsp;매겨주세요</option>
