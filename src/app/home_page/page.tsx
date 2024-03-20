@@ -1,9 +1,7 @@
 'use client';
 import { supabase } from '@/shared/supabase/supabase';
-
 import Link from 'next/link';
 import { ChangeEvent, useEffect, useState } from 'react';
-
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
 
 interface Location {
@@ -19,10 +17,15 @@ interface Location {
 export default function BasicMap() {
   // 수파베이스로부터 지도 좌표 데이터 가져와서 저장하기
   const [locationInfoData, setLocationInfoData] = useState<Location[] | null>([]);
+
   const [selectSee, setSelectSee] = useState<string>('시 선택');
+  const [selectGunGue, setSelectGunGue] = useState<string>('군 /구 선택');
 
   const onchangeSelectSee = (event: ChangeEvent<HTMLSelectElement>) => {
     setSelectSee(event.target.value);
+  };
+  const onchangeSelectGunGue = (event: ChangeEvent<HTMLSelectElement>) => {
+    setSelectGunGue(event.target.value);
   };
 
   async function getData() {
@@ -35,6 +38,10 @@ export default function BasicMap() {
   useEffect(() => {
     getData();
   }, []);
+
+  const filterData = locationInfoData?.filter(
+    (data) => data.toilet_address?.trim().includes(selectSee) && data.toilet_address?.includes(selectGunGue),
+  );
 
   return (
     <>
@@ -55,48 +62,56 @@ export default function BasicMap() {
       <main>
         {/* 검색 폼 */}
 
-        <select value={selectSee} onChange={onchangeSelectSee}>
-          <option value="시 선택">시 선택</option>
-          <option value="서울특별시">서울특별시</option>
-          <option value="대구광역시">대구광역시</option>
-        </select>
+        <form>
+          <select value={selectSee} onChange={onchangeSelectSee}>
+            <option value="시 선택">시 선택</option>
+            <option value="서울특별시">서울특별시</option>
+            <option value="대구광역시">대구광역시</option>
+          </select>
 
-        <>
-          <Map // 지도를 표시할 Container
-            id="map"
-            center={{
-              // 지도의 중심좌표
-              lat: 37.5286,
-              lng: 127.1264,
-            }}
-            style={{
-              // 지도의 크기
-              width: '100%',
-              height: '350px',
-            }}
-            level={15} // 지도의 확대 레벨
-          >
-            {locationInfoData
-              ?.filter((data) => data.toilet_address?.includes(selectSee))
-              .map((location) => (
-                <MapMarker
-                  key={`${location.toilet_name}-${{ lat: location.toilet_latitude, lng: location.toilet_longitude }} `}
-                  position={{
-                    lat: location.toilet_latitude,
-                    lng: location.toilet_longitude,
-                  }}
-                  image={{
-                    src: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png', // 마커이미지의 주소입니다
-                    size: {
-                      width: 24,
-                      height: 35,
-                    }, // 마커이미지의 크기입니다
-                  }}
-                  title={location.toilet_name}
-                />
-              ))}
-          </Map>
-        </>
+          <select value={selectGunGue} onChange={onchangeSelectGunGue}>
+            <option value="구 선택">군/구 선택</option>
+            <option value="군위군">군위군</option>
+            <option value="강동구">강동구</option>
+            <option value="양천구">양천구</option>
+          </select>
+        </form>
+
+        <Map // 지도를 표시할 Container
+          id="map"
+          center={{
+            // 지도의 중심좌표
+            lat: 37.5286,
+            lng: 127.1264,
+          }}
+          style={{
+            // 지도의 크기
+            width: '100%',
+            height: '350px',
+          }}
+          level={15} // 지도의 확대 레벨
+        >
+          {filterData?.map((location) => (
+            <MapMarker
+              key={`${location.toilet_name}-${{
+                lat: location.toilet_latitude,
+                lng: location.toilet_longitude,
+              }} `}
+              position={{
+                lat: location.toilet_latitude,
+                lng: location.toilet_longitude,
+              }}
+              image={{
+                src: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png', // 마커이미지의 주소입니다
+                size: {
+                  width: 24,
+                  height: 35,
+                }, // 마커이미지의 크기입니다
+              }}
+              title={location.toilet_name}
+            />
+          ))}
+        </Map>
       </main>
     </>
   );
