@@ -2,6 +2,7 @@
 
 import HomeCategory from '@/components/home_page/HomeCategory';
 import useSelectForm from '@/hooks/home_page/useSelectForm';
+
 import { supabase } from '@/shared/supabase/supabase';
 import { useEffect, useState } from 'react';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
@@ -17,6 +18,8 @@ interface Location {
 }
 
 export default function HomePage() {
+  // justand에서 데이터 받아오기
+
   const [locationInfoData, setLocationInfoData] = useState<Location[] | null>([]);
   const { handleSelectCity, handleSelectCounty, selectGunGue, selectSee, selectState } = useSelectForm();
 

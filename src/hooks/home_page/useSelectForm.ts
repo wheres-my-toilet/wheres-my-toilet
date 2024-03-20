@@ -1,12 +1,15 @@
+import { useUserLocationStore } from '@/shared/store/UserLocation';
 import { ChangeEvent, useState } from 'react';
 
 export default function useSelectForm() {
   const [selectSee, setSelectSee] = useState<string>('시 선택');
   const [selectGunGue, setSelectGunGue] = useState<string>('군 /구 선택');
 
+  const { userLocation, setLocation } = useUserLocationStore();
+
   // selectState 로 저장될 center 좌표가 담길 state 선언
   const [selectState, setSelectState] = useState({
-    center: { lat: 33.450701, lng: 126.570667 },
+    center: userLocation,
     isPanto: false,
   });
 
