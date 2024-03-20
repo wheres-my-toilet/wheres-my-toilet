@@ -1,7 +1,7 @@
 'use client';
 
+import Link from 'next/link';
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 const Signup = () => {
   return (
@@ -22,7 +22,7 @@ const Signup = () => {
         </form>
 
         <div className="pt-5 flex gap-3">
-          <p> 이미 회원이신가요?</p>
+          <p>이미 회원이신가요?</p>
           <Link href="/login_page" className="cursor-pointer">
             로그인
           </Link>
