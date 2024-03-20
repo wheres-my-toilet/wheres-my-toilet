@@ -7,7 +7,7 @@ import logoImage from '../assets/images/logo.png';
 import { useUserLocationStore } from '@/shared/store/UserLocation';
 
 const Header = () => {
-  // const {userAddress, setUserAddress} = useState('')
+  const [userAddress, setUserAddress] = useState<string>('');
   const { userLocation, setLocation } = useUserLocationStore();
 
   //현재 좌표 가져오기
@@ -29,20 +29,23 @@ const Header = () => {
       },
     );
     const { documents } = await response.json();
-    console.log(documents);
+    const address = documents[0]?.address;
+    setUserAddress(address.region_1depth_name + ' ' + address.region_2depth_name);
   };
 
   useEffect(() => {
     handleGetCurrentPosition();
     getAddress();
-    // console.log('userLocation 값 변경 : ', userLocation.latitude, userLocation.longitude);
   }, [userLocation]);
 
   return (
     <header className="flex p-5 justify-between items-center">
-      <button type="button" onClick={handleGetCurrentPosition}>
-        현재 나의 위치 // {userLocation.latitude} {userLocation.longitude}
-      </button>
+      <div>
+        <button type="button" onClick={handleGetCurrentPosition}>
+          현재 나의 위치
+        </button>
+        <p>{userAddress}</p>
+      </div>
       <h1>
         <Link href="/">
           <Image src={logoImage} alt="똥간 어디에?" width={224} height={34} />
