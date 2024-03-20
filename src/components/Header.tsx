@@ -2,21 +2,46 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import logoImage from '../assets/images/logo.png';
+import { useUserLocationStore } from '@/shared/store/UserLocation';
 
 const Header = () => {
+  // const {userAddress, setUserAddress} = useState('')
+  const { userLocation, setLocation } = useUserLocationStore();
+
   //현재 좌표 가져오기
   const handleGetCurrentPosition = () => {
     navigator.geolocation.getCurrentPosition((position) => {
       console.log('현재 좌표 : ', position.coords.latitude, position.coords.longitude);
+      setLocation({ latitude: position.coords.latitude, longitude: position.coords.longitude });
     });
   };
+
+  //kakao rest api 위도/경도 -> 주소 변환
+  const getAddress = async () => {
+    const response = await fetch(
+      `https://dapi.kakao.com/v2/local/geo/coord2address.json?x=${userLocation.longitude}&y=${userLocation.latitude}`,
+      {
+        headers: {
+          Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}`,
+        },
+      },
+    );
+    const { documents } = await response.json();
+    console.log(documents);
+  };
+
+  useEffect(() => {
+    handleGetCurrentPosition();
+    getAddress();
+    // console.log('userLocation 값 변경 : ', userLocation.latitude, userLocation.longitude);
+  }, [userLocation]);
 
   return (
     <header className="flex p-5 justify-between items-center">
       <button type="button" onClick={handleGetCurrentPosition}>
-        현재 나의 위치
+        현재 나의 위치 // {userLocation.latitude} {userLocation.longitude}
       </button>
       <h1>
         <Link href="/">
