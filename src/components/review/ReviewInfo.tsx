@@ -30,12 +30,13 @@ function ReviewInfo({ id }: { id: number }) {
         setReview(review_info);
       } catch (error) {}
     };
-    const getUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      // setUser(user?.email);
-    };
+
+    // const getUser = async () => {
+    //   const {
+    //     data: { user },
+    //   } = await supabase.auth.getUser();
+    // setUser(user?.email);
+    // };
 
     getReview();
   }, [id]);
@@ -48,9 +49,11 @@ function ReviewInfo({ id }: { id: number }) {
     if (result > 2) return `⭐⭐ `;
     if (result === 1) return `⭐`;
   };
+
   const onClickDeleteReview = async () => {
     // const { error } = await supabase.from('review_info').delete().eq('user_id', user);
   };
+
   const onClickChangeReview = async (user_id: string | null) => {
     const { data, error } = await supabase
       .from('review_info')
@@ -58,6 +61,7 @@ function ReviewInfo({ id }: { id: number }) {
       // .eq('user_id', user_id)
       .select();
   };
+
   return (
     <>
       <h2>평점</h2>

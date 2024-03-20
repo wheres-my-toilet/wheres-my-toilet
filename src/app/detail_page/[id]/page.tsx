@@ -17,6 +17,7 @@ function DetailPage({
   const { id } = params;
   const [toiletLocation, setToiletLocation] = useState<Database['public']['Tables']['toilet_location']['Row']>();
   // const { data: { user } } = await supabase.auth.getUser()
+
   useEffect(() => {
     const getToiletLocation = async () => {
       try {
@@ -36,8 +37,9 @@ function DetailPage({
 
     getToiletLocation();
   }, [id]);
+
   return (
-    <>
+    <div className="flex flex-col">
       <h1>{toiletLocation?.toilet_name}</h1>
       <section>
         {toiletLocation?.toilet_latitude && toiletLocation?.toilet_longitude && (
@@ -77,7 +79,7 @@ function DetailPage({
       <div>
         <ReviewForm id={id} />
       </div>
-    </>
+    </div>
   );
 }
 

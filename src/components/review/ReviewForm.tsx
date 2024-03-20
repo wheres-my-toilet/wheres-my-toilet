@@ -9,10 +9,12 @@ function ReviewForm({ id }: { id: number }) {
   const [toiletPopRate, setToiletPopRate] = useState(0);
   const [reviewContent, setReviewContent] = useState('');
   const onSubmitAddReview = async (e: React.FormEvent<HTMLFormElement>) => {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    e.preventDefault();
+    // const {
+    //   data: { user },
+    // } = await supabase.auth.getUser();
+
+    // e.preventDefault();
+
     const newReview: review_info = {
       review_id: id,
       review_createdat: Date.now().toString(),
@@ -27,6 +29,7 @@ function ReviewForm({ id }: { id: number }) {
 
     // const { data, error } = await supabase.from('review_info').update(newReview).eq('user_id', user?.email).select();
   };
+
   return (
     <>
       <h2>사용자 리뷰</h2>
