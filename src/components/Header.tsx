@@ -17,7 +17,6 @@ const Header = () => {
       console.log('현재 좌표 : ', position.coords.latitude, position.coords.longitude);
       setLocation({ lat: position.coords.latitude, lng: position.coords.longitude });
     });
-    getAddress();
   };
 
   //kakao rest api 위도/경도 -> 주소 변환
@@ -41,6 +40,7 @@ const Header = () => {
 
   useEffect(() => {
     handleGetCurrentPosition();
+    getAddress();
   }, [userLocation]);
 
   return (
