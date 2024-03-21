@@ -1,11 +1,14 @@
+import { useLoggedInUserStore } from '@/shared/store/LoggedInUser';
 import { supabase } from '@/shared/supabase/supabase';
 import { useRouter } from 'next/navigation';
 import { ChangeEvent, FormEvent, useState } from 'react';
 
 export function Form() {
   const router = useRouter();
+  const { setUserData } = useLoggedInUserStore();
   const [loginInfo, setLoginInfo] = useState({ email: '', password: '' });
-  //TODO: 에러 유형 추가
+
+  const INVALID_LOGIN_CREDENTIAL = 'Invalid login credentials';
 
   const handleLoginInfo = {
     handleEmail: (event: ChangeEvent<HTMLInputElement>) => {
@@ -31,14 +34,16 @@ export function Form() {
       });
       if (error) {
         switch (error.message) {
-          //TODO : error handling logic 추가
+          case INVALID_LOGIN_CREDENTIAL:
+            alert('이메일 또는 비밀번호가 올바르지 않습니다.');
+            break;
           default:
             alert(`에러가 발생하였습니다.\n${error.message}`);
         }
         return;
       }
       if (data) {
-        //TODO : 유저 정보를 넘겨주는 로직(zustand 상태관리 필요)
+        setUserData({ email: loginInfo.email, user_id: data.user.id, nickname: data.user.user_metadata.display_name });
         router.push('/home_page');
       }
     } catch (error) {

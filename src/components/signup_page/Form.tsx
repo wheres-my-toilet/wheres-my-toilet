@@ -9,6 +9,7 @@ export function Form() {
   const INVALID_PASSWORD = 'Password should be at least 6 characters.';
   const INVALID_EMAIL = 'Unable to validate email address: invalid format';
   const EXISTING_EMAIL = 'User already registered';
+  const INVALID_INPUT = 'Invalid login credentials';
 
   const handleUserInfo = {
     handleNickname: (event: ChangeEvent<HTMLInputElement>) => {
@@ -60,6 +61,9 @@ export function Form() {
               break;
             case EXISTING_EMAIL:
               alert('이미 존재하는 이메일입니다.');
+              break;
+            case INVALID_INPUT:
+              alert('유효하지 않은 입력값입니다.');
               break;
             default:
               alert(`에러가 발생하였습니다.\n${error.message}`);
