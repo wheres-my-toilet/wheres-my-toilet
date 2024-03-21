@@ -34,9 +34,12 @@ const Header = () => {
   };
 
   useEffect(() => {
-    handleGetCurrentPosition();
     getAddress();
   }, [userLocation]);
+
+  useEffect(() => {
+    handleGetCurrentPosition();
+  }, []);
 
   return (
     <header className="flex p-5 justify-between items-center">

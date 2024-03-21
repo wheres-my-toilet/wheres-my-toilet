@@ -26,15 +26,8 @@ export default function HomePage() {
     (data) => data.toilet_address?.trim().includes(selectSee) && data.toilet_address?.trim().includes(selectGunGue),
   );
 
-  // 나의 현 위치의 위/경도인  userLocation 을 가져옵시다.
   const { userLocation } = useUserLocationStore();
 
-  // 나의 현 위치를 중심으로 locationInfoData와  가까운   가까운 곳을 마커로 표기~~
-  // locationInfoData : 이것이 수파베이스로부터 가져온 화장실 위치 정보 데이터들.....
-
-  // 표기된 곳을 리스트로 표기합시다.
-
-  // 두 지점의 위도 경도를 이용하여 거리를 계산하는 함수
   function getDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
     const R = 6371; // 지구의 반지름 (단위: km)
     const dLat = (lat2 - lat1) * (Math.PI / 180);
@@ -70,7 +63,6 @@ export default function HomePage() {
   }
 
   const nearestLocation: Location | null = findNearestLocation(userLocation, locationInfoData);
-  console.log(nearestLocation);
 
   return (
     <>
