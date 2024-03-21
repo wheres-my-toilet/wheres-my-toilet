@@ -20,23 +20,27 @@ const Header = () => {
 
   //kakao rest api 위도/경도 -> 주소 변환
   const getAddress = async () => {
-    const response = await fetch(
-      `https://dapi.kakao.com/v2/local/geo/coord2address.json?x=${userLocation.lng}&y=${userLocation.lat}`,
-      {
-        headers: {
-          Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}`,
+    try {
+      const response = await fetch(
+        `https://dapi.kakao.com/v2/local/geo/coord2address.json?x=${userLocation.lng}&y=${userLocation.lat}`,
+        {
+          headers: {
+            Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}`,
+          },
         },
-      },
-    );
-    const { documents } = await response.json();
-    const address = documents[0]?.address;
-    setUserAddress(address.region_1depth_name + ' ' + address.region_2depth_name);
+      );
+      const { documents } = await response.json();
+      const address = documents[0]?.address;
+      setUserAddress(address.region_1depth_name + ' ' + address.region_2depth_name);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
     handleGetCurrentPosition();
     getAddress();
-  }, [userAddress]);
+  }, [userLocation]);
 
   return (
     <header className="flex p-5 justify-between items-center">
