@@ -5,14 +5,14 @@ import { Tip } from './TipList'; // Tip 타입 임포트
 
 interface TipModalProps {
   tip: Tip;
-  onClose: () => void;
+  handleCloseModal: () => void;
 }
 
-const TipModal: React.FC<TipModalProps> = ({ tip, onClose }) => {
+const TipModal: React.FC<TipModalProps> = ({ tip, handleCloseModal }) => {
   return (
     <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50 z-50">
       <div className="bg-white p-6 rounded-lg shadow-lg relative w-4/6 min-h-72">
-        <button className="absolute top-2 right-2 text-gray-500" onClick={onClose}>
+        <button className="absolute top-2 right-2 text-gray-500" onClick={handleCloseModal}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6"

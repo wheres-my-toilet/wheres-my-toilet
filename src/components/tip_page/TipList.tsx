@@ -43,7 +43,7 @@ const TipList = () => {
   };
 
   // 모달 닫기 핸들러
-  const closeModal = () => {
+  const handleCloseModal = () => {
     setIsModalOpen(false);
   };
 
@@ -66,12 +66,12 @@ const TipList = () => {
       <div className="w-4/5 flex gap-4 flex-wrap">
         {data?.map((item) => (
           // 카드 클릭 이벤트 핸들러를 전달하고 카드 컴포넌트에 포함
-          <TipCard key={item.id} tip={item} onClick={() => handleCardClick(item)} />
+          <TipCard key={item.id} tip={item} handleCardClick={() => handleCardClick(item)} />
         ))}
       </div>
       {/* 모달 컴포넌트 */}
       {isModalOpen && selectedTip && (
-        <TipModal tip={selectedTip} onClose={closeModal} /> // onClose prop 전달
+        <TipModal tip={selectedTip} handleCloseModal={handleCloseModal} /> // onClose prop 전달
       )}
     </div>
   );
