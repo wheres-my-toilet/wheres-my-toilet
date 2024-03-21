@@ -1,7 +1,8 @@
 'use client';
 
 import { supabase } from '@/shared/supabase/supabase';
-import React, { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import React from 'react';
 
 type Bookmark = {
   bookmark_id: number;
@@ -14,32 +15,31 @@ type Bookmark = {
 };
 
 const BookmarkList = () => {
-  const [bookmarkData, setBookmarkData] = useState<Bookmark[]>([]);
-
-  const getData = async () => {
+  const USER_ID = '56'; //임시값
+  const getData = async (user_id: string): Promise<Bookmark[]> => {
     const { data, error } = await supabase
       .from('bookmark')
       .select('*, toilet_location(toilet_name, toilet_address)')
-      .eq('user_id', '56'); //56 임시값, 이후에 변경될 예정
+      .eq('user_id', user_id);
 
     if (error) {
       console.error('Error fetching data:', error.message);
-      alert('에러가 발생했습니다.');
-      return;
+      return [];
     }
 
-    setBookmarkData(data as Bookmark[]);
+    return data as Bookmark[];
   };
 
-  useEffect(() => {
-    getData();
-  }, []);
+  const { data } = useQuery<Bookmark[]>({
+    queryFn: () => getData(USER_ID),
+    queryKey: ['bookmark'],
+  });
 
   return (
     <>
-      {bookmarkData && bookmarkData.length ? (
+      {data && data.length ? (
         <ul className="grid grid-cols-4 sm:grid-cols-1 md:grid-cols-2 gap-4">
-          {bookmarkData?.map((item) => {
+          {data?.map((item) => {
             return (
               <li key={item.bookmark_id}>
                 <strong>{item.toilet_location.toilet_name}</strong>
