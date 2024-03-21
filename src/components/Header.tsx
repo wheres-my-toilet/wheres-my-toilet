@@ -14,7 +14,6 @@ const Header = () => {
   //현재 좌표 가져오기
   const handleGetCurrentPosition = () => {
     navigator.geolocation.getCurrentPosition((position) => {
-      console.log('현재 좌표 : ', position.coords.latitude, position.coords.longitude);
       setLocation({ lat: position.coords.latitude, lng: position.coords.longitude });
     });
   };
