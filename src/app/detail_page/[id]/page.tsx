@@ -1,6 +1,7 @@
 'use client';
 import ReviewForm from '@/components/review/ReviewForm';
 import ReviewInfo from '@/components/review/ReviewInfo';
+import ReviewRate from '@/components/review/ReviewRate';
 import { getRate } from '@/components/review/reviewFunction/getRate';
 import { getReview } from '@/components/review/reviewFunction/queryFunction';
 import { supabase } from '@/shared/supabase/supabase';
@@ -92,25 +93,7 @@ function DetailPage({
         )}
       </section>
       <section>
-        <h2>평점</h2>
-        {review && review.length === 0 ? (
-          <>
-            <h3>평점이 없어요ㅠㅠ 평점을 등록해주세요</h3>
-          </>
-        ) : (
-          <>
-            {review?.map((info) => {
-              return (
-                <div key={info.review_createdat}>
-                  <p>전체 평점 : {getRate(info.toilet_clean_rate, info.toilet_loc_rate, info.toilet_pop_rate)}</p>
-                  <p>청결도 : {info.toilet_clean_rate}</p>
-                  <p>위치 : {info.toilet_loc_rate}</p>
-                  <p>인구 밀도 : {info.toilet_pop_rate}</p>
-                </div>
-              );
-            })}
-          </>
-        )}
+        <ReviewRate id={id} />
       </section>
       <div>
         <ReviewForm id={id} />

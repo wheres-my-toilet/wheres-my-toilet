@@ -12,7 +12,7 @@ function ReviewInfo({ id }: { id: number }) {
   const queryClient = useQueryClient();
   const [changeMode, setChangeMode] = useState(false);
   const [changeText, setChangeText] = useState('');
-  const { data: review, error } = useQuery<review_info[]>({
+  const { data: review } = useQuery<review_info[]>({
     queryKey: ['review'],
     queryFn: () => getReview(id),
   });
