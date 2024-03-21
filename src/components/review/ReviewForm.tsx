@@ -1,9 +1,10 @@
 'use client';
 import React, { useState } from 'react';
-import { review_info } from './ReviewInfo';
 import { supabase } from '@/shared/supabase/supabase';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 function ReviewForm({ id }: { id: number }) {
+  const queryClient = useQueryClient();
   const [toiletRate, setToiletRate] = useState({
     cleanRate: 0,
     locationRate: 0,
@@ -12,25 +13,38 @@ function ReviewForm({ id }: { id: number }) {
   const [reviewContent, setReviewContent] = useState('');
 
   const handleAddReview = async (e: React.FormEvent<HTMLFormElement>) => {
-    // const {
-    //   data: { user },
-    // } = await supabase.auth.getUser();
+    e.preventDefault();
 
-    // e.preventDefault();
+    if (!toiletRate.cleanRate || !toiletRate.locationRate || !toiletRate.popRate || !reviewContent) {
+      alert('리뷰를 남겨주세요!');
+      return;
+    }
 
-    const newReview: review_info = {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    const newReview = {
       review_id: id,
-      review_createdat: Date.now().toString(),
-      user_id: '', // user?.email,
+      user_id: user?.user_metadata.email,
       review_content: reviewContent,
       toilet_id: id,
-      user_nickname: '', // display Name 어떻게 받아올까요....
+      user_nickname: user?.user_metadata.display_name,
       toilet_clean_rate: toiletRate.cleanRate,
       toilet_loc_rate: toiletRate.locationRate,
       toilet_pop_rate: toiletRate.popRate,
     };
 
-    // const { data, error } = await supabase.from('review_info').update(newReview).eq('user_id', user?.email).select();
+    if (user) {
+      try {
+        const { data, error } = await supabase.from('review_info').insert(newReview).select();
+        if (error) {
+          throw error.message;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
   };
 
   return (

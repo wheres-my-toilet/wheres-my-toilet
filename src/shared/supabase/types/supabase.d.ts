@@ -12,7 +12,7 @@ export type Database = {
           toilet_id: number | null;
           toilet_loc_rate: number | null;
           toilet_pop_rate: number | null;
-          user_id: string | null;
+          user_id: string;
           user_nickname: string | null;
         };
         Insert: {

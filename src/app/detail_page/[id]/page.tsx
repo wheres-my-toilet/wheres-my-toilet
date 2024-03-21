@@ -1,12 +1,26 @@
 'use client';
 import ReviewForm from '@/components/review/ReviewForm';
 import ReviewInfo from '@/components/review/ReviewInfo';
+import { getRate } from '@/components/review/reviewFunction/getRate';
+import { getReview, getUser } from '@/components/review/reviewFunction/queryFunction';
 import { supabase } from '@/shared/supabase/supabase';
 import { Database } from '@/shared/supabase/types/supabase';
+import { useQuery } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
 
-// 로그인 안하면 이 페이지 접근 못하게 막아야될듯 해요 user 가져오는 부분 계속 오류나서 그 부분 다 주석입니다.
+export type review_info = {
+  review_content: string | null;
+  review_createdat: string;
+  review_id: number | null;
+  toilet_clean_rate: number | null;
+  toilet_id: number | null;
+  toilet_loc_rate: number | null;
+  toilet_pop_rate: number | null;
+  user_id: string;
+  user_nickname: string | null;
+};
+
 function DetailPage({
   params,
 }: {
@@ -17,6 +31,11 @@ function DetailPage({
   const { id } = params;
   const [toiletLocation, setToiletLocation] = useState<Database['public']['Tables']['toilet_location']['Row']>();
 
+  const { data: review } = useQuery<review_info[]>({
+    queryKey: ['review'],
+    queryFn: () => getReview(id),
+  });
+
   useEffect(() => {
     const getToiletLocation = async () => {
       try {
@@ -26,7 +45,7 @@ function DetailPage({
           .eq('toilet_id', id)
           .single();
         if (error) {
-          throw error;
+          throw error.message;
         }
         setToiletLocation(toilet_location);
       } catch (error) {
@@ -39,7 +58,7 @@ function DetailPage({
 
   return (
     <div className="flex flex-col">
-      <h1>{toiletLocation?.toilet_name}</h1>
+      <h2>{toiletLocation?.toilet_name}</h2>
       <section>
         {toiletLocation?.toilet_latitude && toiletLocation?.toilet_longitude && (
           <Map
@@ -73,10 +92,31 @@ function DetailPage({
         )}
       </section>
       <section>
-        <ReviewInfo id={id} />
+        <h2>평점</h2>
+        {review && review.length === 0 ? (
+          <>
+            <h3>평점이 없어요ㅠㅠ 평점을 등록해주세요</h3>
+          </>
+        ) : (
+          <>
+            {review?.map((info) => {
+              return (
+                <div key={info.review_createdat}>
+                  <p>전체 평점 : {getRate(info.toilet_clean_rate, info.toilet_loc_rate, info.toilet_pop_rate)}</p>
+                  <p>청결도 : {info.toilet_clean_rate}</p>
+                  <p>위치 : {info.toilet_loc_rate}</p>
+                  <p>인구 밀도 : {info.toilet_pop_rate}</p>
+                </div>
+              );
+            })}
+          </>
+        )}
       </section>
       <div>
         <ReviewForm id={id} />
+      </div>
+      <div>
+        <ReviewInfo id={id} />
       </div>
     </div>
   );
