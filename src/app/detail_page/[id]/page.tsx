@@ -32,11 +32,6 @@ function DetailPage({
   const { id } = params;
   const [toiletLocation, setToiletLocation] = useState<Database['public']['Tables']['toilet_location']['Row']>();
 
-  const { data: review } = useQuery<review_info[]>({
-    queryKey: ['review'],
-    queryFn: () => getReview(id),
-  });
-
   useEffect(() => {
     const getToiletLocation = async () => {
       try {

@@ -1,6 +1,5 @@
 'use client';
 import React, { useState } from 'react';
-import { supabase } from '@/shared/supabase/supabase';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { addReview, getUser } from './reviewFunction/queryFunction';
 

@@ -2,7 +2,7 @@
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { getReview } from './reviewFunction/queryFunction';
-import { getAverage, getAverageRate, getRate, getStarRating } from './reviewFunction/getRate';
+import { getAverage, getAverageRate, getStarRating } from './reviewFunction/getRate';
 
 import type { review_info } from '@/app/detail_page/[id]/page';
 
