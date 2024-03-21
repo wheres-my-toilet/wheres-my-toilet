@@ -1,7 +1,8 @@
 'use client';
 import React, { useState } from 'react';
 import { supabase } from '@/shared/supabase/supabase';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { addReview, getUser } from './reviewFunction/queryFunction';
 
 function ReviewForm({ id }: { id: number }) {
   const queryClient = useQueryClient();
@@ -12,6 +13,24 @@ function ReviewForm({ id }: { id: number }) {
   });
   const [reviewContent, setReviewContent] = useState('');
 
+  const { data } = useQuery({
+    queryKey: ['user'],
+    queryFn: getUser,
+  });
+
+  const addMutation = useMutation({
+    mutationFn: addReview,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['review'] });
+      setReviewContent('');
+      setToiletRate({
+        cleanRate: 0,
+        locationRate: 0,
+        popRate: 0,
+      });
+    },
+  });
+
   const handleAddReview = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -19,31 +38,18 @@ function ReviewForm({ id }: { id: number }) {
       alert('리뷰를 남겨주세요!');
       return;
     }
-
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
     const newReview = {
       review_id: id,
-      user_id: user?.user_metadata.email,
+      user_id: data?.user_metadata.email,
       review_content: reviewContent,
       toilet_id: id,
-      user_nickname: user?.user_metadata.display_name,
+      user_nickname: data?.user_metadata.display_name,
       toilet_clean_rate: toiletRate.cleanRate,
       toilet_loc_rate: toiletRate.locationRate,
       toilet_pop_rate: toiletRate.popRate,
     };
-
-    if (user) {
-      try {
-        const { data, error } = await supabase.from('review_info').insert(newReview).select();
-        if (error) {
-          throw error.message;
-        }
-      } catch (error) {
-        console.log(error);
-      }
+    if (data) {
+      addMutation.mutate(newReview);
     }
   };
 

@@ -2,7 +2,7 @@
 import ReviewForm from '@/components/review/ReviewForm';
 import ReviewInfo from '@/components/review/ReviewInfo';
 import { getRate } from '@/components/review/reviewFunction/getRate';
-import { getReview, getUser } from '@/components/review/reviewFunction/queryFunction';
+import { getReview } from '@/components/review/reviewFunction/queryFunction';
 import { supabase } from '@/shared/supabase/supabase';
 import { Database } from '@/shared/supabase/types/supabase';
 import { useQuery } from '@tanstack/react-query';

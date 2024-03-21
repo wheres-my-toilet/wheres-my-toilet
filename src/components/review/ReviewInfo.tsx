@@ -3,29 +3,38 @@ import { supabase } from '@/shared/supabase/supabase';
 import React, { useState } from 'react';
 import { getLocationDate } from './reviewFunction/getLocationDate';
 import { getRate } from './reviewFunction/getRate';
-import { useQuery } from '@tanstack/react-query';
-import { getReview, getUser } from './reviewFunction/queryFunction';
-import { review_info } from '@/app/detail_page/[id]/page';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { changeReview, deleteReview, getReview, getUser } from './reviewFunction/queryFunction';
+
+import type { review_info } from '@/app/detail_page/[id]/page';
 
 function ReviewInfo({ id }: { id: number }) {
+  const queryClient = useQueryClient();
   const [changeMode, setChangeMode] = useState(false);
   const [changeText, setChangeText] = useState('');
   const { data: review, error } = useQuery<review_info[]>({
     queryKey: ['review'],
     queryFn: () => getReview(id),
   });
-  const { data: user } = useQuery({
+  const { data } = useQuery({
     queryKey: ['user'],
     queryFn: getUser,
   });
+  const user = data?.user_metadata.email;
 
-  const handleDeleteReview = async (reviewCreatedat: string) => {
-    const { error } = await supabase
-      .from('review_info')
-      .delete()
-      .eq('user_id', user)
-      .eq('review_createdat', reviewCreatedat);
-  };
+  // const changeReviewMutation = useMutation({
+  //   mutationFn: changeReview,
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries({ queryKey: ['review'] });
+  //   },
+  // });
+
+  // const deletesReviewMutation = useMutation({
+  //   mutationFn: deleteReview,
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries({ queryKey: ['review'] });
+  //   },
+  // });
 
   const handleChangeReview = async (user_id: string, reviewCreatedat: string) => {
     if (!changeText) {
@@ -37,6 +46,17 @@ function ReviewInfo({ id }: { id: number }) {
       .eq('user_id', user_id)
       .eq('review_createdat', reviewCreatedat)
       .select();
+
+    // changeReviewMutation.mutate({ user_id, reviewCreatedat, changeText });
+  };
+
+  const handleDeleteReview = async (reviewCreatedat: string) => {
+    const { error } = await supabase
+      .from('review_info')
+      .delete()
+      .eq('user_id', user)
+      .eq('review_createdat', reviewCreatedat);
+    // deletesReviewMutation.mutate({ user, reviewCreatedat });
   };
 
   return (
@@ -58,28 +78,42 @@ function ReviewInfo({ id }: { id: number }) {
                         setChangeText(e.target.value);
                       }}
                     />
+                    <div>
+                      {user === info.user_id && (
+                        <>
+                          <button
+                            onClick={() => {
+                              handleChangeReview(info.user_id, info.review_createdat);
+                              setChangeMode((prev) => !prev);
+                            }}
+                          >
+                            완료
+                          </button>
+                          <button onClick={() => handleDeleteReview(info.review_createdat)}>삭제</button>
+                        </>
+                      )}
+                    </div>
                   </>
                 ) : (
                   <>
                     <p>{info.review_content}</p>
+                    <div>
+                      {user === info.user_id && (
+                        <>
+                          <button
+                            onClick={() => {
+                              setChangeMode((prev) => !prev);
+                            }}
+                          >
+                            수정
+                          </button>
+                          <button onClick={() => handleDeleteReview(info.review_createdat)}>삭제</button>
+                        </>
+                      )}
+                    </div>
                   </>
                 )}
               </div>
-            </div>
-            <div>
-              {user === info.user_id && (
-                <>
-                  <button
-                    onClick={() => {
-                      handleChangeReview(info.user_id, info.review_createdat);
-                      setChangeMode((prev) => !prev);
-                    }}
-                  >
-                    수정
-                  </button>
-                  <button onClick={() => handleDeleteReview(info.review_createdat)}>삭제</button>
-                </>
-              )}
             </div>
           </div>
         );

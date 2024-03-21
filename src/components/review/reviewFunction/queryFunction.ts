@@ -1,12 +1,12 @@
-import { review_info } from '@/app/detail_page/[id]/page';
 import { supabase } from '@/shared/supabase/supabase';
-import { useState } from 'react';
+
+import type { review_info } from '@/app/detail_page/[id]/page';
 
 export const getUser = async () => {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  return user?.user_metadata.email;
+  return user;
 };
 
 export const getReview = async (id: number): Promise<review_info[]> => {
@@ -15,4 +15,26 @@ export const getReview = async (id: number): Promise<review_info[]> => {
     throw error.message;
   }
   return review_info;
+};
+
+export const addReview = async (newReview: any) => {
+  const { data, error } = await supabase.from('review_info').insert(newReview).select();
+  return data;
+};
+
+export const changeReview = async (user_id: string, reviewCreatedat: string, changeText: string): Promise<void> => {
+  const { data, error } = await supabase
+    .from('review_info')
+    .update({ review_content: changeText })
+    .eq('user_id', user_id)
+    .eq('review_createdat', reviewCreatedat)
+    .select();
+};
+
+export const deleteReview = async (user: string, reviewCreatedat: string) => {
+  const { error } = await supabase
+    .from('review_info')
+    .delete()
+    .eq('user_id', user)
+    .eq('review_createdat', reviewCreatedat);
 };
