@@ -1,5 +1,5 @@
 import { supabase } from '@/shared/supabase/supabase';
-import Location from '@/types/home_page/types';
+import { Location } from '@/types/home_page/types';
 import { useEffect, useState } from 'react';
 
 export default function useGetData() {
