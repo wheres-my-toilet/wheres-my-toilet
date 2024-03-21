@@ -1,13 +1,13 @@
 import { create } from 'zustand';
 
-type store = {
-  userData: { email: string; password: string };
-  setUserData: ({ email, password }: { email: string; password: string }) => boolean;
+type Store = {
+  userData: { email: string; user_id: string; nickname: string };
+  setUserData: ({ email, user_id, nickname }: { email: string; user_id: string; nickname: string }) => void;
 };
 
-export const useLoggedInUserStore = create((set) => ({
-  userData: { email: '', password: '' },
-  setUserData: ({ email, password }: { email: string; password: string }) => {
-    set({ userData: { email, password } });
+export const useLoggedInUserStore = create<Store>((set) => ({
+  userData: { email: '', user_id: '', nickname: 'poopy' },
+  setUserData: ({ email, user_id, nickname }) => {
+    set({ userData: { email, user_id, nickname } });
   },
 }));
