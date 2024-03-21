@@ -1,20 +1,10 @@
 'use client';
 
-import { supabase } from '@/shared/supabase/supabase';
+import { Bookmark, deleteData, getData } from '@/util/bookmark_page/api';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 import React from 'react';
 import { PiToiletPaper } from 'react-icons/pi';
-
-type Bookmark = {
-  bookmark_id: number;
-  toilet_id: number;
-  toilet_location: {
-    toilet_address: string;
-    toilet_name: string;
-  };
-  user_id: string;
-};
 
 const BookmarkList = () => {
   const USER_ID = '56'; //임시값
@@ -22,44 +12,12 @@ const BookmarkList = () => {
   const QUERY_KEY_BOOKMARK = 'bookmark'; //bookmark 공통 query key
   const queryClient = useQueryClient();
 
-  const deleteData = async (bookmarkId: number) => {
-    try {
-      const { error } = await supabase.from('bookmark').delete().eq('bookmark_id', bookmarkId);
-
-      if (error) {
-        console.error('Error fetching data:', error.message);
-        return;
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   const mutation = useMutation({
     mutationFn: deleteData,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEY_BOOKMARK] });
     },
   });
-
-  const getData = async (user_id: string): Promise<Bookmark[]> => {
-    try {
-      const { data, error } = await supabase
-        .from('bookmark')
-        .select('*, toilet_location(toilet_name, toilet_address)')
-        .eq('user_id', user_id);
-
-      if (error) {
-        console.error('Error fetching data:', error.message);
-        return [];
-      }
-
-      return data as Bookmark[];
-    } catch (error) {
-      console.error(error);
-      return [];
-    }
-  };
 
   const { data } = useQuery<Bookmark[]>({
     queryFn: () => getData(USER_ID),
