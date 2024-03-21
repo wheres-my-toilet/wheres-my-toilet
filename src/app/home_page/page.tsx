@@ -3,45 +3,77 @@
 import HomeCategory from '@/components/home_page/HomeCategory';
 import useSelectForm from '@/hooks/home_page/useSelectForm';
 
-import { supabase } from '@/shared/supabase/supabase';
-import { useEffect, useState } from 'react';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
 
+import { useUserLocationStore } from '@/shared/store/UserLocation';
+import useGetData from '@/hooks/home_page/useGetData';
 interface Location {
-  toilet_address: string;
-  toilet_baby_diaper: string | null;
-  toilet_id: number;
   toilet_latitude: number;
   toilet_longitude: number;
   toilet_name: string;
-  toilet_opening_hours: string | null;
+  // 필요한 경우 더 많은 속성 추가 가능
 }
 
+interface UserLocation {
+  lat: number;
+  lng: number;
+  // 필요한 경우 더 많은 속성 추가 가능
+}
 export default function HomePage() {
-  // justand에서 데이터 받아오기
-
-  const [locationInfoData, setLocationInfoData] = useState<Location[] | null>([]);
-  const { handleSelectCity, handleSelectCounty, selectGunGue, selectSee, selectState } = useSelectForm();
-
-  async function getData() {
-    const { data, error } = await supabase.from('toilet_location').select(' * ');
-
-    setLocationInfoData(data);
-    return { data, error };
-  }
-
-  useEffect(() => {
-    getData();
-  }, []);
-
+  const { selectGunGue, selectSee, selectState, handleSelectCity, handleSelectCounty } = useSelectForm();
+  const { locationInfoData } = useGetData();
   const filterData = locationInfoData?.filter(
     (data) => data.toilet_address?.trim().includes(selectSee) && data.toilet_address?.trim().includes(selectGunGue),
   );
 
+  // 나의 현 위치의 위/경도인  userLocation 을 가져옵시다.
+  const { userLocation } = useUserLocationStore();
+
+  // 나의 현 위치를 중심으로 locationInfoData와  가까운   가까운 곳을 마커로 표기~~
+  // locationInfoData : 이것이 수파베이스로부터 가져온 화장실 위치 정보 데이터들.....
+
+  // 표기된 곳을 리스트로 표기합시다.
+
+  // 두 지점의 위도 경도를 이용하여 거리를 계산하는 함수
+  function getDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
+    const R = 6371; // 지구의 반지름 (단위: km)
+    const dLat = (lat2 - lat1) * (Math.PI / 180);
+    const dLon = (lon2 - lon1) * (Math.PI / 180);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = R * c; // 두 지점 사이의 거리 (단위: km)
+    return distance;
+  }
+
+  // 사용자의 현재 위치와 가장 가까운 위치의 데이터를 찾는 함수
+  function findNearestLocation(userLocation: UserLocation, data: Location[] | null): Location | null {
+    let minDistance = Infinity;
+    let nearestLocation = null;
+
+    data?.forEach((location) => {
+      const distance = getDistance(
+        userLocation.lat,
+        userLocation.lng,
+        location.toilet_latitude,
+        location.toilet_longitude,
+      );
+
+      if (distance < minDistance) {
+        minDistance = distance;
+        nearestLocation = location;
+      }
+    });
+
+    return nearestLocation;
+  }
+
+  const nearestLocation: Location | null = findNearestLocation(userLocation, locationInfoData);
+  console.log(nearestLocation);
+
   return (
     <>
-      <HomeCategory />
-
       <form>
         <select value={selectSee} onChange={handleSelectCity}>
           <option value="시 선택">시 선택</option>
@@ -55,11 +87,10 @@ export default function HomePage() {
           <option value="강동구">강동구</option>
           <option value="양천구">양천구</option>
         </select>
-      </form>
-
-      <main>
-        {/* 검색 폼 */}
-
+      </form>{' '}
+      <br />
+      <main className="flex items-center  ">
+        <HomeCategory />
         <Map
           id="map"
           center={selectState.center}
@@ -70,6 +101,16 @@ export default function HomePage() {
           }}
           level={15}
         >
+          {nearestLocation && (
+            <MapMarker position={{ lat: nearestLocation.toilet_latitude, lng: nearestLocation.toilet_longitude }}>
+              <div style={{ padding: '5px', color: '#000' }}>{nearestLocation.toilet_name}</div>
+            </MapMarker>
+          )}
+
+          <MapMarker position={userLocation}>
+            <div style={{ padding: '5px', color: '#000' }}>나의 위치</div>
+          </MapMarker>
+
           {filterData?.map((location) => (
             <MapMarker
               key={`${location.toilet_name}-${{
