@@ -5,6 +5,7 @@ import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import logoImage from '../assets/images/logo.png';
 import { useUserLocationStore } from '@/shared/store/UserLocation';
+import { BiCurrentLocation } from 'react-icons/bi';
 
 const Header = () => {
   const [userAddress, setUserAddress] = useState('');
@@ -16,6 +17,7 @@ const Header = () => {
       console.log('현재 좌표 : ', position.coords.latitude, position.coords.longitude);
       setLocation({ lat: position.coords.latitude, lng: position.coords.longitude });
     });
+    getAddress();
   };
 
   //kakao rest api 위도/경도 -> 주소 변환
@@ -39,17 +41,16 @@ const Header = () => {
 
   useEffect(() => {
     handleGetCurrentPosition();
-    getAddress();
   }, [userLocation]);
 
   return (
     <header className="flex p-5 justify-between items-center">
-      <div>
-        <button type="button" onClick={handleGetCurrentPosition}>
-          현재 나의 위치
-        </button>
-        <p>{userAddress}</p>
-      </div>
+      <button type="button" className="flex items-center" onClick={handleGetCurrentPosition}>
+        <BiCurrentLocation size="40" />
+        <span className="pl-1 flex flex-col">
+          현재 나의 위치 <strong>{userAddress}</strong>
+        </span>
+      </button>
       <h1>
         <Link href="/">
           <Image src={logoImage} alt="똥간 어디에?" width={224} height={34} />
