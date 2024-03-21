@@ -1,7 +1,8 @@
-import React from "react";
+import BookmarkList from '@/components/bookmark_page/BookmarkList';
+import React from 'react';
 
-const page = () => {
-  return <div>page</div>;
+const BookmarkPage = () => {
+  return <BookmarkList />;
 };
 
-export default page;
+export default BookmarkPage;
