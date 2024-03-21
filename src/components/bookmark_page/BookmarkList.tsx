@@ -1,7 +1,7 @@
 'use client';
 
 import { supabase } from '@/shared/supabase/supabase';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
 type Bookmark = {
@@ -16,6 +16,26 @@ type Bookmark = {
 
 const BookmarkList = () => {
   const USER_ID = '56'; //임시값
+
+  const QUERY_KEY_BOOKMARK = 'bookmark'; //bookmark 공통 query key
+  const queryClient = useQueryClient();
+
+  const deleteData = async (bookmarkId: number) => {
+    const { error } = await supabase.from('bookmark').delete().eq('bookmark_id', bookmarkId);
+
+    if (error) {
+      console.error('Error fetching data:', error.message);
+      return;
+    }
+  };
+
+  const mutation = useMutation({
+    mutationFn: deleteData,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY_BOOKMARK] });
+    },
+  });
+
   const getData = async (user_id: string): Promise<Bookmark[]> => {
     const { data, error } = await supabase
       .from('bookmark')
@@ -32,8 +52,15 @@ const BookmarkList = () => {
 
   const { data } = useQuery<Bookmark[]>({
     queryFn: () => getData(USER_ID),
-    queryKey: ['bookmark'],
+    queryKey: [QUERY_KEY_BOOKMARK],
   });
+
+  //북마크 취소
+  const handleCancelBookmark = (bookmarkId: number) => {
+    if (confirm('즐겨찾기를 취소할까요?')) {
+      mutation.mutate(bookmarkId);
+    }
+  };
 
   return (
     <>
@@ -44,7 +71,9 @@ const BookmarkList = () => {
               <li key={item.bookmark_id}>
                 <strong>{item.toilet_location.toilet_name}</strong>
                 <p>{item.toilet_location.toilet_address}</p>
-                <button type="button">★ 취소</button>
+                <button type="button" onClick={() => handleCancelBookmark(item.bookmark_id)}>
+                  ★ 취소
+                </button>
               </li>
             );
           })}
