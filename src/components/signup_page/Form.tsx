@@ -1,7 +1,9 @@
 import { supabase } from '@/shared/supabase/supabase';
+import { useRouter } from 'next/navigation';
 import { ChangeEvent, FormEvent, useState } from 'react';
 
 export function Form() {
+  const router = useRouter();
   const [userInfo, setUserInfo] = useState({ nickname: '', email: '', password: '' });
   //에러 유형 - 따로 빼는 것이 좋아보임
   const INVALID_PASSWORD = 'Password should be at least 6 characters.';
@@ -55,7 +57,7 @@ export function Form() {
           default:
             alert(`에러가 발생하였습니다.\n${error.message}`);
         }
-      }
+      } else router.push('/login_page');
     } catch (error) {
       console.error(error);
     }

@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 
-import { Form } from '@/components/signup_components/Form';
+import { Form } from '@/components/signup_page/Form';
 
 const Signup = () => {
   return (
