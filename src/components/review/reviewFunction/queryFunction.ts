@@ -1,6 +1,6 @@
 import { supabase } from '@/shared/supabase/supabase';
 
-import type { review_info } from '@/app/detail_page/[id]/page';
+import type { review_info } from '../type';
 
 export const getUser = async () => {
   const {

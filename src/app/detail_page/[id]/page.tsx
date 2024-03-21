@@ -2,25 +2,10 @@
 import ReviewForm from '@/components/review/ReviewForm';
 import ReviewInfo from '@/components/review/ReviewInfo';
 import ReviewRate from '@/components/review/ReviewRate';
-import { getRate } from '@/components/review/reviewFunction/getRate';
-import { getReview } from '@/components/review/reviewFunction/queryFunction';
 import { supabase } from '@/shared/supabase/supabase';
 import { Database } from '@/shared/supabase/types/supabase';
-import { useQuery } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
-
-export type review_info = {
-  review_content: string | null;
-  review_createdat: string;
-  review_id: number | null;
-  toilet_clean_rate: number | null;
-  toilet_id: number | null;
-  toilet_loc_rate: number | null;
-  toilet_pop_rate: number | null;
-  user_id: string;
-  user_nickname: string | null;
-};
 
 function DetailPage({
   params,

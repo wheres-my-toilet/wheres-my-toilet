@@ -6,7 +6,7 @@ import { getRate } from './reviewFunction/getRate';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { changeReview, deleteReview, getReview, getUser } from './reviewFunction/queryFunction';
 
-import type { review_info } from '@/app/detail_page/[id]/page';
+import type { review_info } from './type';
 
 function ReviewInfo({ id }: { id: number }) {
   const queryClient = useQueryClient();

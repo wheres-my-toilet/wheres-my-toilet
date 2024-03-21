@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { addReview, getUser } from './reviewFunction/queryFunction';
+import { supabase } from '@/shared/supabase/supabase';
 
 function ReviewForm({ id }: { id: number }) {
   const queryClient = useQueryClient();
@@ -47,6 +48,7 @@ function ReviewForm({ id }: { id: number }) {
       toilet_loc_rate: toiletRate.locationRate,
       toilet_pop_rate: toiletRate.popRate,
     };
+
     if (data) {
       addMutation.mutate(newReview);
     }

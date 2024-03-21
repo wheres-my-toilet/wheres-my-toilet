@@ -1,4 +1,4 @@
-import type { review_info } from '@/app/detail_page/[id]/page';
+import type { review_info } from '../type';
 
 export const getRate = (toiletCleanRate: number | null, toiletLocRate: number | null, toiletPopRate: number | null) => {
   const result = ((toiletCleanRate ?? 0) + (toiletLocRate ?? 0) + (toiletPopRate ?? 0)) / 3;

@@ -4,7 +4,7 @@ import React from 'react';
 import { getReview } from './reviewFunction/queryFunction';
 import { getAverage, getAverageRate, getStarRating } from './reviewFunction/getRate';
 
-import type { review_info } from '@/app/detail_page/[id]/page';
+import type { review_info } from './type';
 
 function ReviewRate({ id }: { id: number }) {
   const { data: review } = useQuery<review_info[]>({
