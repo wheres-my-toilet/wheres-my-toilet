@@ -78,18 +78,28 @@ const BookmarkList = () => {
         <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 m-4">
           {data?.map((item) => {
             return (
-              <li key={item.bookmark_id} className="p-4 border rounded-md min-h-28 xl:min-h-40">
+              <li key={item.bookmark_id} className="xl:relative p-4 border rounded-md min-h-32 xl:min-h-40">
                 <div className="flex justify-between items-start">
-                  <strong className="text-base md:text-xl">{item.toilet_location.toilet_name}</strong>
+                  <strong className="text-base md:text-xl">
+                    <Link href={`/detail_page/${item.toilet_id}`}>{item.toilet_location.toilet_name}</Link>
+                  </strong>
                   <button
                     type="button"
-                    className="min-w-14 text-gray-400"
+                    className="min-w-12 text-gray-400 text-sm"
                     onClick={() => handleCancelBookmark(item.bookmark_id)}
                   >
                     <span className="text-amber-300">★</span> 취소
                   </button>
                 </div>
-                <p className="text-neutral-600">{item.toilet_location.toilet_address}</p>
+                <p className="text-neutral-600">
+                  <Link href={`/detail_page/${item.toilet_id}`}>{item.toilet_location.toilet_address}</Link>
+                </p>
+                <Link
+                  href={`/detail_page/${item.toilet_id}`}
+                  className="xl:absolute xl:bottom-4 xl:right-4 text-blue-600 text-sm"
+                >
+                  자세히 보기
+                </Link>
               </li>
             );
           })}
