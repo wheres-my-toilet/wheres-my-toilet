@@ -3,6 +3,32 @@ export type Json = string | number | boolean | null | { [key: string]: Json | un
 export type Database = {
   public: {
     Tables: {
+      bookmark: {
+        Row: {
+          bookmark_id: number;
+          toilet_id: number | null;
+          user_id: string | null;
+        };
+        Insert: {
+          bookmark_id?: number;
+          toilet_id?: number | null;
+          user_id?: string | null;
+        };
+        Update: {
+          bookmark_id?: number;
+          toilet_id?: number | null;
+          user_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'public_bookmark_toilet_id_fkey';
+            columns: ['toilet_id'];
+            isOneToOne: false;
+            referencedRelation: 'toilet_location';
+            referencedColumns: ['toilet_id'];
+          },
+        ];
+      };
       review_info: {
         Row: {
           review_content: string | null;
@@ -12,7 +38,7 @@ export type Database = {
           toilet_id: number | null;
           toilet_loc_rate: number;
           toilet_pop_rate: number;
-          user_id: number | null;
+          user_id: string | null;
           user_nickname: string | null;
         };
         Insert: {
@@ -23,7 +49,7 @@ export type Database = {
           toilet_id?: number | null;
           toilet_loc_rate?: number;
           toilet_pop_rate?: number;
-          user_id?: number | null;
+          user_id?: string | null;
           user_nickname?: string | null;
         };
         Update: {
@@ -34,7 +60,7 @@ export type Database = {
           toilet_id?: number | null;
           toilet_loc_rate?: number;
           toilet_pop_rate?: number;
-          user_id?: number | null;
+          user_id?: string | null;
           user_nickname?: string | null;
         };
         Relationships: [];
