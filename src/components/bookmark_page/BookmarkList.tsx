@@ -4,6 +4,7 @@ import { supabase } from '@/shared/supabase/supabase';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 import React from 'react';
+import { PiToiletPaper } from 'react-icons/pi';
 
 type Bookmark = {
   bookmark_id: number;
@@ -105,7 +106,10 @@ const BookmarkList = () => {
           })}
         </ul>
       ) : (
-        '데이터가 없습니다.'
+        <div className="flex items-center justify-center flex-col m-4 min-h-60 border rounded-md text-gray-400 font-bold">
+          <PiToiletPaper size="50" />
+          <p className="mt-4">즐겨찾는 화장실이 없습니다</p>
+        </div>
       )}
     </>
   );
