@@ -55,7 +55,7 @@ const Header = () => {
           <Image src={logoImage} alt="똥간 어디에?" width={224} height={34} />
         </Link>
       </h1>
-      <Link href="/loginNsignup_page">로그인</Link>
+      <Link href="/login_page">로그인</Link>
     </header>
   );
 };
