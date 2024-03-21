@@ -21,11 +21,15 @@ const BookmarkList = () => {
   const queryClient = useQueryClient();
 
   const deleteData = async (bookmarkId: number) => {
-    const { error } = await supabase.from('bookmark').delete().eq('bookmark_id', bookmarkId);
+    try {
+      const { error } = await supabase.from('bookmark').delete().eq('bookmark_id', bookmarkId);
 
-    if (error) {
-      console.error('Error fetching data:', error.message);
-      return;
+      if (error) {
+        console.error('Error fetching data:', error.message);
+        return;
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -37,17 +41,22 @@ const BookmarkList = () => {
   });
 
   const getData = async (user_id: string): Promise<Bookmark[]> => {
-    const { data, error } = await supabase
-      .from('bookmark')
-      .select('*, toilet_location(toilet_name, toilet_address)')
-      .eq('user_id', user_id);
+    try {
+      const { data, error } = await supabase
+        .from('bookmark')
+        .select('*, toilet_location(toilet_name, toilet_address)')
+        .eq('user_id', user_id);
 
-    if (error) {
-      console.error('Error fetching data:', error.message);
+      if (error) {
+        console.error('Error fetching data:', error.message);
+        return [];
+      }
+
+      return data as Bookmark[];
+    } catch (error) {
+      console.error(error);
       return [];
     }
-
-    return data as Bookmark[];
   };
 
   const { data } = useQuery<Bookmark[]>({
