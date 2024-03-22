@@ -18,7 +18,7 @@ export type UserLocation = {
 export type HomePageType = {
   userLocation: UserLocation;
   filterData: Location[] | undefined;
-  nearestLocation: Location | null;
+  nearestLocation: Location[] | null;
 };
 
 export type HomeSelectFormType = {

@@ -13,7 +13,10 @@ const HomePage = () => {
   const { userLocation } = useUserLocationStore();
   const { locationInfoData } = useGetData();
   const { selectSee, selectGunGue, selectState, handleSelectCity, handleSelectCounty, selectLevel } = useSelectForm();
-  const nearestLocation: Location | null = findNearestLocation({ userLocation: userLocation, data: locationInfoData });
+  const nearestLocation: Location[] | null = findNearestLocation({
+    userLocation: userLocation,
+    data: locationInfoData,
+  });
   const filterData = locationInfoData?.filter(
     (location) => location.toilet_address?.includes(selectSee) && location.toilet_address?.includes(selectGunGue),
   );
@@ -41,16 +44,17 @@ const HomePage = () => {
         </Map>
       </section>
 
-      {nearestLocation && (
-        <figure key={nearestLocation.toilet_id}>
-          화장실 이름 : <p>{nearestLocation.toilet_name}</p>
-          주소 : <p>{nearestLocation.toilet_address}</p>
-          <figcaption>
-            <p>{nearestLocation.toilet_latitude}</p>
-            <p>{nearestLocation.toilet_longitude}</p>
-          </figcaption>
-        </figure>
-      )}
+      {nearestLocation &&
+        nearestLocation.map((location) => (
+          <figure key={location.toilet_id} className="m-4">
+            화장실 이름 : <p>{location.toilet_name}</p>
+            주소 : <p>{location.toilet_address}</p>
+            <figcaption>
+              <p>{location.toilet_latitude}</p>
+              <p>{location.toilet_longitude}</p>
+            </figcaption>
+          </figure>
+        ))}
     </>
   );
 };

@@ -7,9 +7,10 @@ export default function findNearestLocation({
 }: {
   userLocation: UserLocation;
   data: Location[] | null;
-}): Location | null {
+}): Location[] | null {
   let minDistance = Infinity;
-  let nearestLocation = null;
+
+  const nearestLocation: Location[] = [];
 
   data?.forEach((location) => {
     const distance = getDistance({
@@ -21,7 +22,16 @@ export default function findNearestLocation({
 
     if (distance < minDistance) {
       minDistance = distance;
-      nearestLocation = location;
+
+      nearestLocation.push({
+        toilet_address: location.toilet_address,
+        toilet_baby_diaper: location.toilet_baby_diaper,
+        toilet_id: location.toilet_id,
+        toilet_latitude: location.toilet_latitude,
+        toilet_longitude: location.toilet_longitude,
+        toilet_name: location.toilet_name,
+        toilet_opening_hours: location.toilet_opening_hours,
+      });
     }
   });
 
