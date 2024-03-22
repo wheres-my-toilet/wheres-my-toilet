@@ -50,7 +50,7 @@ const Header = () => {
       <button type="button" className="flex items-center" onClick={handleGetCurrentPosition}>
         <BiCurrentLocation size="40" />
         <span className="pl-1 flex flex-col">
-          현재 나의 위치 <strong>{userAddress}</strong>
+          현재 나의 위치 <strong>{userAddress ? <p>{userAddress}</p> : <p>찾는중</p>}</strong>
         </span>
       </button>
       <h1>
