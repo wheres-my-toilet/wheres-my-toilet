@@ -1,6 +1,7 @@
 'use client';
 
-import { Bookmark, deleteData, getData } from '@/util/bookmark_page/api';
+import { Bookmark, ReviewRate, deleteData, getData, getReviewData } from '@/util/bookmark_page/api';
+import { calculateAverage } from '@/util/bookmark_page/calculateRate';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 import React from 'react';
@@ -10,6 +11,7 @@ const BookmarkList = () => {
   const USER_ID = '56'; //임시값
 
   const QUERY_KEY_BOOKMARK = 'bookmark'; //bookmark 공통 query key
+  const QUERY_KEY_REVIEW_RATE = 'reviewRate'; //reviewRate 공통 query key
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
@@ -22,6 +24,13 @@ const BookmarkList = () => {
   const { data } = useQuery<Bookmark[]>({
     queryFn: () => getData(USER_ID),
     queryKey: [QUERY_KEY_BOOKMARK],
+  });
+
+  const toiletIds = data?.map((bookmark) => bookmark.toilet_id) || [];
+  const { data: reviewData } = useQuery<ReviewRate[]>({
+    queryFn: () => getReviewData(toiletIds),
+    queryKey: [QUERY_KEY_REVIEW_RATE],
+    enabled: !!data,
   });
 
   //북마크 취소
@@ -39,9 +48,7 @@ const BookmarkList = () => {
             return (
               <li key={item.bookmark_id} className="xl:relative p-4 border rounded-md min-h-32 xl:min-h-40">
                 <div className="flex justify-between items-start">
-                  <strong className="text-base md:text-xl">
-                    <Link href={`/detail_page/${item.toilet_id}`}>{item.toilet_location.toilet_name}</Link>
-                  </strong>
+                  ⭐{calculateAverage(item.toilet_id, reviewData!)}
                   <button
                     type="button"
                     className="min-w-12 text-gray-400 text-sm"
@@ -50,6 +57,9 @@ const BookmarkList = () => {
                     <span className="text-amber-300">★</span> 취소
                   </button>
                 </div>
+                <strong className="text-base md:text-xl">
+                  <Link href={`/detail_page/${item.toilet_id}`}>{item.toilet_location.toilet_name}</Link>
+                </strong>
                 <p className="text-neutral-600">
                   <Link href={`/detail_page/${item.toilet_id}`}>{item.toilet_location.toilet_address}</Link>
                 </p>
