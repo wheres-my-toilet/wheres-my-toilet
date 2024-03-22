@@ -9,7 +9,7 @@ export const getUser = async () => {
   return user;
 };
 
-export const getReview = async (id: number): Promise<review_info[]> => {
+export const getReviewToiletId = async (id: number): Promise<review_info[]> => {
   const { data, error } = await supabase.from('review_info').select('*').eq('toilet_id', id);
   if (error) {
     throw error.message;
@@ -30,11 +30,11 @@ export const addReview = async (newReview: any) => {
   return data;
 };
 
-export const changeReview = async (review_id: number, changeText: string) => {
+export const changeReview = async (reviewId: number, changeText: string) => {
   const { data, error } = await supabase
     .from('review_info')
     .update({ review_content: changeText })
-    .eq('review_id', review_id)
+    .eq('review_id', reviewId)
     .select();
   if (error) {
     throw new Error(error?.message);
@@ -44,5 +44,4 @@ export const changeReview = async (review_id: number, changeText: string) => {
 
 export const deleteReview = async (review_id: number) => {
   const { error } = await supabase.from('review_info').delete().eq('review_id', review_id);
-  return error;
 };

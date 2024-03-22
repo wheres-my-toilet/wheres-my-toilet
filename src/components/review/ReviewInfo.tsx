@@ -3,7 +3,7 @@ import { supabase } from '@/shared/supabase/supabase';
 import React, { useState } from 'react';
 import { getLocationDate } from './reviewFunction/getLocationDate';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { changeReview, deleteReview, getReview, getReviewId, getUser } from './reviewFunction/queryFunction';
+import { changeReview, deleteReview, getReviewToiletId, getReviewId, getUser } from './reviewFunction/queryFunction';
 
 import type { review_info } from './reviewType';
 import { getRate } from './reviewFunction/getRate';
@@ -15,7 +15,7 @@ function ReviewInfo({ id }: { id: number }) {
 
   const { data: review } = useQuery<review_info[]>({
     queryKey: ['review'],
-    queryFn: () => getReview(id),
+    queryFn: () => getReviewToiletId(id),
   });
   const { data: review_id } = useQuery({
     queryKey: ['review'],
@@ -33,6 +33,7 @@ function ReviewInfo({ id }: { id: number }) {
   //   mutationFn: changeReview,
   //   onSuccess: () => {
   //     queryClient.invalidateQueries({ queryKey: ['review'] });
+  //     setChangeMode((prev) => !prev);
   //   },
   // });
 
@@ -43,21 +44,23 @@ function ReviewInfo({ id }: { id: number }) {
     },
   });
 
-  const handleChangeReview = async (review_id: number) => {
+  const handleChangeReview = async (reviewId: number) => {
     if (!changeText) {
       return;
     }
     const { data, error } = await supabase
       .from('review_info')
       .update({ review_content: changeText })
-      .eq('review_id', review_id)
+      .eq('review_id', reviewId)
       .select();
-
-    // changeReviewMutation.mutate({ review_id, changeText });
+    if (error) {
+      throw new Error(error?.message);
+    }
+    // changeReviewMutation.mutate({ reviewId, changeText });
   };
 
-  const handleDeleteReview = async (review_id: number) => {
-    deletesReviewMutation.mutate(review_id);
+  const handleDeleteReview = async (reviewId: number) => {
+    deletesReviewMutation.mutate(reviewId);
   };
 
   const handleToggle = (reviewId: number) => {

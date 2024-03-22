@@ -1,7 +1,7 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
-import { getReview } from './reviewFunction/queryFunction';
+import { getReviewToiletId } from './reviewFunction/queryFunction';
 import { getAverage, getAverageRate, getReviewContentAverage, getStarRating } from './reviewFunction/getRate';
 
 import type { review_info } from './reviewType';
@@ -9,7 +9,7 @@ import type { review_info } from './reviewType';
 function ReviewRate({ id }: { id: number }) {
   const { data: review } = useQuery<review_info[]>({
     queryKey: ['review'],
-    queryFn: () => getReview(id),
+    queryFn: () => getReviewToiletId(id),
   });
 
   return (
@@ -28,7 +28,7 @@ function ReviewRate({ id }: { id: number }) {
                 청결도 :{' '}
                 {getStarRating(
                   getAverage(
-                    review.reduce((acc, info) => acc + (info.toilet_clean_rate || 0), 0),
+                    review.reduce((acc, info) => acc + (info.toilet_clean_rate || 1), 1),
                     review.length,
                   ),
                 )}
@@ -37,7 +37,7 @@ function ReviewRate({ id }: { id: number }) {
                 위치 :{' '}
                 {getStarRating(
                   getAverage(
-                    review.reduce((acc, info) => acc + (info.toilet_loc_rate || 0), 0),
+                    review.reduce((acc, info) => acc + (info.toilet_loc_rate || 1), 1),
                     review.length,
                   ),
                 )}
@@ -46,7 +46,7 @@ function ReviewRate({ id }: { id: number }) {
                 인구 밀도 :{' '}
                 {getStarRating(
                   getAverage(
-                    review.reduce((acc, info) => acc + (info.toilet_pop_rate || 0), 0),
+                    review.reduce((acc, info) => acc + (info.toilet_pop_rate || 1), 1),
                     review.length,
                   ),
                 )}
