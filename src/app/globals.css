@@ -21,3 +21,8 @@
     text-wrap: balance;
   }
 }
+
+@font-face {
+  font-family: 'SSRONET_Handwritten';
+  src: url('../assets/fonts/SSRONET_Handwritten.ttf');
+}
