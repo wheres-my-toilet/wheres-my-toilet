@@ -1,8 +1,8 @@
 import Image from 'next/image';
-import toiletFlush from '../../assets/images/etiquette_images/toiletFlush.png';
-import noSmoking from '../../assets/images/etiquette_images/noSmoking.png';
-import noDoodle from '../../assets/images/etiquette_images/noDoodle.png';
-import trashBin from '../../assets/images/etiquette_images/trashBin.png';
+import toiletFlush from '@/assets/images/etiquette_images/toiletFlush.png';
+import noSmoking from '@/assets/images/etiquette_images/noSmoking.png';
+import noDoodle from '@/assets/images/etiquette_images/noDoodle.png';
+import trashBin from '@/assets/images/etiquette_images/trashBin.png';
 
 const images = [
   { src: toiletFlush, alt: '똥간 어디에?', width: 224, height: 34, content: '사용한 변기 물을 내립니다.' },

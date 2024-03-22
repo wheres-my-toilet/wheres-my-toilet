@@ -43,7 +43,7 @@ export function Form() {
         return;
       }
       if (data) {
-        setUserData({ email: loginInfo.email, user_id: data.user.id, nickname: data.user.user_metadata.display_name });
+        setUserData({ email: loginInfo.email, user_uid: data.user.id, nickname: data.user.user_metadata.display_name });
         router.push('/home_page');
       }
     } catch (error) {

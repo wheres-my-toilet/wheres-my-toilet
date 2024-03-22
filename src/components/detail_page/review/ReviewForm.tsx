@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { addReview, getUser } from '../../api/reviewQuery/queryFunction';
+import { addReview, getUser } from '../../../api/reviewQuery/queryFunction';
 
 function ReviewForm({ id }: { id: number }) {
   const queryClient = useQueryClient();
