@@ -1,11 +1,11 @@
 'use client';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { useState } from 'react';
-import { changeReview, deleteReview, getReviewId, getUser } from '../../api/reviewQuery/queryFunction';
-import { getLocationDate } from '../../util/detail_page/getLocationDate';
-import { getRate } from '../../util/detail_page/getRate';
+import { changeReview, deleteReview, getReviewId, getUser } from '../../../api/reviewQuery/queryFunction';
+import { getLocationDate } from '../../../util/detail_page/getLocationDate';
+import { getRate } from '../../../util/detail_page/getRate';
 
-import type { review_info } from '../../types/reviewType';
+import type { review_info } from '../../../types/reviewType';
 
 function ReviewContent({ info }: { info: review_info }) {
   const [changeMode, setChangeMode] = useState(false);

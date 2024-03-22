@@ -1,7 +1,7 @@
-import ReviewForm from '@/components/review/ReviewForm';
-import ReviewInfo from '@/components/review/ReviewInfo';
-import ReviewMap from '@/components/review/ReviewMap';
-import ReviewRate from '@/components/review/ReviewRate';
+import ReviewForm from '@/components/detail_page/review/ReviewForm';
+import ReviewInfo from '@/components/detail_page/review/ReviewInfo';
+import ReviewMap from '@/components/detail_page/review/ReviewMap';
+import ReviewRate from '@/components/detail_page/review/ReviewRate';
 import React from 'react';
 
 function DetailPage({
