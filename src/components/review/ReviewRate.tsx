@@ -1,10 +1,10 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
-import { getReviewToiletId } from './reviewFunction/queryFunction';
-import { getAverage, getAverageRate, getReviewContentAverage, getStarRating } from './reviewFunction/getRate';
+import { getReviewToiletId } from '../../api/reviewQuery/queryFunction';
+import { getAverage, getAverageRate, getReviewContentAverage, getStarRating } from '../../util/detail_page/getRate';
 
-import type { review_info } from './reviewType';
+import type { review_info } from '../../types/reviewType';
 
 function ReviewRate({ id }: { id: number }) {
   const { data: review } = useQuery<review_info[]>({

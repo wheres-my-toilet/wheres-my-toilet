@@ -1,6 +1,6 @@
 import { supabase } from '@/shared/supabase/supabase';
 
-import type { review_info } from '../reviewType';
+import type { review_info } from '../../types/reviewType';
 
 export const getUser = async () => {
   const {
@@ -25,21 +25,20 @@ export const getReviewId = async () => {
 export const addReview = async (newReview: any) => {
   const { data, error } = await supabase.from('review_info').insert(newReview).select();
   if (error) {
-    throw new Error(error?.message);
+    throw new Error(error?.message || 'An unknown error occurred');
   }
   return data;
 };
 
-export const changeReview = async (reviewId: number, changeText: string) => {
+export const changeReview = async ({ review_id, changeText }: { review_id: number; changeText: string }) => {
   const { data, error } = await supabase
     .from('review_info')
     .update({ review_content: changeText })
-    .eq('review_id', reviewId)
+    .eq('review_id', review_id)
     .select();
   if (error) {
-    throw new Error(error?.message);
+    throw new Error(error?.message || 'An unknown error occurred');
   }
-  return data;
 };
 
 export const deleteReview = async (review_id: number) => {

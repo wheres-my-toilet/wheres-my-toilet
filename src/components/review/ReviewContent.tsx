@@ -1,12 +1,11 @@
 'use client';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { useState } from 'react';
-import { deleteReview, getReviewId, getUser } from './reviewFunction/queryFunction';
-import { getLocationDate } from './reviewFunction/getLocationDate';
-import { getRate } from './reviewFunction/getRate';
-import { supabase } from '@/shared/supabase/supabase';
+import { changeReview, deleteReview, getReviewId, getUser } from '../../api/reviewQuery/queryFunction';
+import { getLocationDate } from '../../util/detail_page/getLocationDate';
+import { getRate } from '../../util/detail_page/getRate';
 
-import type { review_info } from './reviewType';
+import type { review_info } from '../../types/reviewType';
 
 function ReviewContent({ info }: { info: review_info }) {
   const [changeMode, setChangeMode] = useState(false);
@@ -24,13 +23,13 @@ function ReviewContent({ info }: { info: review_info }) {
     queryFn: getUser,
   });
 
-  // const changeReviewMutation = useMutation({
-  //   mutationFn: changeReview,
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries({ queryKey: ['review'] });
-  //     setChangeMode((prev) => !prev);
-  //   },
-  // });
+  const changeReviewMutation = useMutation({
+    mutationFn: changeReview,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['review'] });
+      setChangeMode((prev) => !prev);
+    },
+  });
 
   const deletesReviewMutation = useMutation({
     mutationFn: deleteReview,
@@ -43,15 +42,8 @@ function ReviewContent({ info }: { info: review_info }) {
     if (!changeText) {
       return;
     }
-    const { data, error } = await supabase
-      .from('review_info')
-      .update({ review_content: changeText })
-      .eq('review_id', reviewId)
-      .select();
-    if (error) {
-      throw new Error(error?.message);
-    }
-    // changeReviewMutation.mutate({ reviewId, changeText });
+
+    changeReviewMutation.mutate({ review_id: reviewId, changeText });
   };
 
   const handleDeleteReview = async (reviewId: number) => {
