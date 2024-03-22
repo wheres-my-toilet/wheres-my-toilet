@@ -48,7 +48,7 @@ const BookmarkList = () => {
             return (
               <li key={item.bookmark_id} className="xl:relative p-4 border rounded-md min-h-32 xl:min-h-40">
                 <div className="flex justify-between items-start">
-                  ⭐{calculateAverage(item.toilet_id, reviewData!)}
+                  {calculateAverage(item.toilet_id, reviewData!)}
                   <button
                     type="button"
                     className="min-w-12 text-gray-400 text-sm"
