@@ -1,5 +1,5 @@
-import handleChangeCity from '@/service/home_page/getCityPosition';
-import handleChangeCounty from '@/service/home_page/getCountryPosition';
+import getCityPosition from '@/service/home_page/getCityPosition';
+import getCountryPosition from '@/service/home_page/getCountryPosition';
 import { useUserLocationStore } from '@/shared/store/UserLocation';
 import { ChangeEvent, useState } from 'react';
 
@@ -16,7 +16,7 @@ export default function useSelectForm() {
   const handleSelectCity = (event: ChangeEvent<HTMLSelectElement>) => {
     setSelectSee(event.target.value);
 
-    const { center, isPanto } = handleChangeCity(event.target.value);
+    const { center, isPanto } = getCityPosition(event.target.value);
 
     setSelectState({ center, isPanto });
   };
@@ -24,7 +24,7 @@ export default function useSelectForm() {
   const handleSelectCounty = (event: ChangeEvent<HTMLSelectElement>) => {
     setSelectGunGue(event.target.value);
 
-    const { center, isPanto, level } = handleChangeCounty(event.target.value);
+    const { center, isPanto, level } = getCountryPosition(event.target.value);
 
     setSelectState({ center, isPanto });
     setSelectLevel(level);
