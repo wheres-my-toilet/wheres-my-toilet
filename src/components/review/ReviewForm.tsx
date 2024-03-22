@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { addReview, getUser } from './reviewFunction/queryFunction';
-import { supabase } from '@/shared/supabase/supabase';
 
 function ReviewForm({ id }: { id: number }) {
   const queryClient = useQueryClient();
@@ -39,7 +38,7 @@ function ReviewForm({ id }: { id: number }) {
       return;
     }
     const newReview = {
-      review_id: id,
+      review_id: Math.floor(Math.random() * 500),
       user_id: data?.user_metadata.email,
       review_content: reviewContent,
       toilet_id: id,

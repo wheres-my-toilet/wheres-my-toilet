@@ -2,9 +2,9 @@
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { getReview } from './reviewFunction/queryFunction';
-import { getAverage, getAverageRate, getStarRating } from './reviewFunction/getRate';
+import { getAverage, getAverageRate, getReviewContentAverage, getStarRating } from './reviewFunction/getRate';
 
-import type { review_info } from './type';
+import type { review_info } from './reviewType';
 
 function ReviewRate({ id }: { id: number }) {
   const { data: review } = useQuery<review_info[]>({
@@ -51,6 +51,7 @@ function ReviewRate({ id }: { id: number }) {
                   ),
                 )}
               </p>
+              <p>{getReviewContentAverage(review)}</p>
             </div>
           )}
         </>
