@@ -13,9 +13,16 @@ function HomePageMap({ filterData, nearestLocation, userLocation }: HomePageType
         />
       )}
 
-      <MapMarker position={userLocation}>
-        <div className="text-black font-bold text-sm  m-2 ">나의 위치</div>
-      </MapMarker>
+      <MapMarker
+        position={userLocation}
+        image={{
+          src: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png',
+          size: {
+            width: 24,
+            height: 35,
+          },
+        }}
+      />
 
       {filterData?.map((location) => (
         <MapMarker
@@ -26,13 +33,6 @@ function HomePageMap({ filterData, nearestLocation, userLocation }: HomePageType
           position={{
             lat: location.toilet_latitude,
             lng: location.toilet_longitude,
-          }}
-          image={{
-            src: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png',
-            size: {
-              width: 24,
-              height: 35,
-            },
           }}
           title={location.toilet_name}
         />
