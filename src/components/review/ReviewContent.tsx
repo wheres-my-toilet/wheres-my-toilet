@@ -1,0 +1,120 @@
+'use client';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import React, { useState } from 'react';
+import { deleteReview, getReviewId, getUser } from './reviewFunction/queryFunction';
+import { getLocationDate } from './reviewFunction/getLocationDate';
+import { getRate } from './reviewFunction/getRate';
+import { supabase } from '@/shared/supabase/supabase';
+
+import type { review_info } from './reviewType';
+
+function ReviewContent({ info }: { info: review_info }) {
+  const [changeMode, setChangeMode] = useState(false);
+  const [changeText, setChangeText] = useState('');
+
+  const queryClient = useQueryClient();
+
+  const { data: review_id } = useQuery({
+    queryKey: ['reviewId'],
+    queryFn: getReviewId,
+  });
+
+  const { data } = useQuery({
+    queryKey: ['user'],
+    queryFn: getUser,
+  });
+
+  // const changeReviewMutation = useMutation({
+  //   mutationFn: changeReview,
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries({ queryKey: ['review'] });
+  //     setChangeMode((prev) => !prev);
+  //   },
+  // });
+
+  const deletesReviewMutation = useMutation({
+    mutationFn: deleteReview,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['review'] });
+    },
+  });
+
+  const handleChangeReview = async (reviewId: number) => {
+    if (!changeText) {
+      return;
+    }
+    const { data, error } = await supabase
+      .from('review_info')
+      .update({ review_content: changeText })
+      .eq('review_id', reviewId)
+      .select();
+    if (error) {
+      throw new Error(error?.message);
+    }
+    // changeReviewMutation.mutate({ reviewId, changeText });
+  };
+
+  const handleDeleteReview = async (reviewId: number) => {
+    deletesReviewMutation.mutate(reviewId);
+  };
+
+  const handleToggle = (reviewId: number) => {
+    const reviewCollectId = review_id?.filter((item) => item.review_id === reviewId);
+    if (reviewCollectId) {
+      setChangeMode((prev) => !prev);
+    }
+  };
+
+  const user = data?.user_metadata.email;
+  return (
+    <div key={info.review_id}>
+      <p>닉네임 : {info.user_nickname}</p>
+      <div>
+        <span>작성일 : {getLocationDate(info.review_createdat)}</span>
+        <span>{getRate(info.toilet_clean_rate, info.toilet_loc_rate, info.toilet_pop_rate)}</span>
+        <div>
+          {changeMode ? (
+            <>
+              <input
+                type="text"
+                value={changeText}
+                onChange={(e) => {
+                  setChangeText(e.target.value);
+                }}
+              />
+              <div>
+                {user === info.user_id && (
+                  <>
+                    <button
+                      onClick={() => {
+                        handleChangeReview(info.review_id);
+                        setChangeMode((prev) => !prev);
+                      }}
+                    >
+                      완료
+                    </button>
+                    <button onClick={() => handleDeleteReview(info.review_id)}>삭제</button>
+                  </>
+                )}
+              </div>
+            </>
+          ) : (
+            <>
+              <p>{info.review_content}</p>
+              <div>
+                {user === info.user_id && (
+                  <>
+                    <button onClick={() => handleToggle(info.review_id)}>수정</button>
+                    <button onClick={() => handleDeleteReview(info.review_id)}>삭제</button>
+                  </>
+                )}
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default ReviewContent;
