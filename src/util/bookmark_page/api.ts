@@ -29,7 +29,7 @@ export const getData = async (user_id: string): Promise<Bookmark[]> => {
       console.error('Error fetching data:', error.message);
       return [];
     }
-    console.log(data);
+
     return data as Bookmark[];
   } catch (error) {
     console.error(error);
@@ -43,7 +43,6 @@ export const getReviewData = async (toiletIds: number[]): Promise<ReviewRate[]> 
       .from('review_info')
       .select('toilet_id, toilet_loc_rate, toilet_clean_rate, toilet_pop_rate')
       .in('toilet_id', toiletIds); //북마크 된 화장실 id
-    console.log('리뷰조회', data);
 
     if (error) {
       console.error('Error fetching data:', error.message);
