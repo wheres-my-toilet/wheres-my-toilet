@@ -1,7 +1,32 @@
-import React from "react";
+import ReviewForm from '@/components/review/ReviewForm';
+import ReviewInfo from '@/components/review/ReviewInfo';
+import ReviewMap from '@/components/review/ReviewMap';
+import ReviewRate from '@/components/review/ReviewRate';
+import React from 'react';
 
-const page = () => {
-  return <div>page</div>;
-};
+function DetailPage({
+  params,
+}: {
+  params: {
+    id: number;
+  };
+}) {
+  const { id } = params;
 
-export default page;
+  return (
+    <div className="flex flex-col">
+      <ReviewMap id={id} />
+      <section>
+        <ReviewRate id={id} />
+      </section>
+      <div>
+        <ReviewForm id={id} />
+      </div>
+      <div>
+        <ReviewInfo id={id} />
+      </div>
+    </div>
+  );
+}
+
+export default DetailPage;
