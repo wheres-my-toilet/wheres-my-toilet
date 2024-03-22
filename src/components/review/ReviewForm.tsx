@@ -55,10 +55,10 @@ function ReviewForm({ id }: { id: number }) {
 
   return (
     <>
-      <h2>사용자 리뷰</h2>
-      <form onSubmit={handleAddReview}>
-        <label>
-          청결도
+      <h2 className="w-60 h-14 text-center py-4  bg-black text-white rounded-xl my-4 ml-auto mr-auto">사용자 리뷰</h2>
+      <form className="flex flex-col items-center" onSubmit={handleAddReview}>
+        <label className="w-4/6 mb-2">
+          청결도 :&nbsp;
           <select
             value={toiletRate.cleanRate}
             onChange={(e) => {
@@ -74,8 +74,8 @@ function ReviewForm({ id }: { id: number }) {
             <option value={1}>⭐</option>
           </select>
         </label>
-        <label>
-          위치
+        <label className="w-4/6 mb-2">
+          위치 :&nbsp;
           <select
             value={toiletRate.locationRate}
             onChange={(e) => {
@@ -91,8 +91,8 @@ function ReviewForm({ id }: { id: number }) {
             <option value={1}>⭐</option>
           </select>
         </label>
-        <label>
-          인구밀도
+        <label className="w-4/6 mb-2">
+          인구밀도 :&nbsp;
           <select
             value={toiletRate.popRate}
             onChange={(e) => {
@@ -108,15 +108,17 @@ function ReviewForm({ id }: { id: number }) {
             <option value={1}>⭐</option>
           </select>
         </label>
-        <input
-          type="text"
-          value={reviewContent}
-          placeholder="리뷰를 입력해주세요~"
-          onChange={(e) => {
-            setReviewContent(e.target.value);
-          }}
-        />
-        <button>리뷰를 올려 주세요</button>
+        <div>
+          <input
+            type="text"
+            value={reviewContent}
+            placeholder="리뷰를 입력해주세요~"
+            onChange={(e) => {
+              setReviewContent(e.target.value);
+            }}
+          />
+          <button>리뷰를 올려 주세요</button>
+        </div>
       </form>
     </>
   );

@@ -27,9 +27,11 @@ function ReviewMap({ id }: { id: number }) {
     getToiletLocation();
   }, [id]);
   return (
-    <>
-      <h2>{toiletLocation?.toilet_name}</h2>
-      <section>
+    <div className="flex flex-col">
+      <h2 className="w-60 h-14 text-center py-4 px-6 bg-black text-white rounded-xl my-4 ml-auto mr-auto">
+        {toiletLocation?.toilet_name}
+      </h2>
+      <section className="">
         {toiletLocation?.toilet_latitude && toiletLocation?.toilet_longitude && (
           <Map
             id="map"
@@ -37,7 +39,12 @@ function ReviewMap({ id }: { id: number }) {
               lat: toiletLocation.toilet_latitude,
               lng: toiletLocation.toilet_longitude,
             }}
-            style={{ width: '40%', height: '350px' }}
+            style={{
+              width: '50%',
+              height: '350px',
+              margin: 'auto',
+              marginBottom: '20px',
+            }}
             level={3}
           >
             <MapMarker
@@ -51,7 +58,7 @@ function ReviewMap({ id }: { id: number }) {
                 lng: toiletLocation.toilet_longitude,
               }}
               image={{
-                src: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png',
+                src: 'https://t1.daumcdn.net/mapjsapi/images/marker.png',
                 size: {
                   width: 24,
                   height: 35,
@@ -61,7 +68,7 @@ function ReviewMap({ id }: { id: number }) {
           </Map>
         )}
       </section>
-    </>
+    </div>
   );
 }
 

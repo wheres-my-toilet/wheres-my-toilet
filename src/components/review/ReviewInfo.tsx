@@ -14,7 +14,7 @@ function ReviewInfo({ id }: { id: number }) {
   return (
     <>
       {review?.map((info) => (
-        <ReviewContent info={info} />
+        <ReviewContent key={info.review_id} info={info} />
       ))}
     </>
   );
