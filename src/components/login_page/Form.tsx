@@ -3,12 +3,12 @@ import { supabase } from '@/shared/supabase/supabase';
 import { useRouter } from 'next/navigation';
 import { ChangeEvent, FormEvent, useState } from 'react';
 
+import { errors } from '@/util/login_page/error';
+
 export function Form() {
   const router = useRouter();
   const { setUserData } = useLoggedInUserStore();
   const [loginInfo, setLoginInfo] = useState({ email: '', password: '' });
-
-  const INVALID_LOGIN_CREDENTIAL = 'Invalid login credentials';
 
   const handleLoginInfo = {
     handleEmail: (event: ChangeEvent<HTMLInputElement>) => {
@@ -34,7 +34,7 @@ export function Form() {
       });
       if (error) {
         switch (error.message) {
-          case INVALID_LOGIN_CREDENTIAL:
+          case errors.INVALID_LOGIN_CREDENTIAL:
             alert('이메일 또는 비밀번호가 올바르지 않습니다.');
             break;
           default:

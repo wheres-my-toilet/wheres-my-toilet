@@ -1,15 +1,11 @@
 import { supabase } from '@/shared/supabase/supabase';
 import { useRouter } from 'next/navigation';
 import { ChangeEvent, FormEvent, useState } from 'react';
+import { errors } from '@/util/signup_page/error';
 
 export function Form() {
   const router = useRouter();
   const [userInfo, setUserInfo] = useState({ nickname: '', email: '', password: '', verify_password: '' });
-  //에러 유형 - 따로 빼는 것이 좋아보임
-  const INVALID_PASSWORD = 'Password should be at least 6 characters.';
-  const INVALID_EMAIL = 'Unable to validate email address: invalid format';
-  const EXISTING_EMAIL = 'User already registered';
-  const INVALID_INPUT = 'Invalid login credentials';
 
   const handleUserInfo = {
     handleNickname: (event: ChangeEvent<HTMLInputElement>) => {
@@ -53,16 +49,16 @@ export function Form() {
         });
         if (error) {
           switch (error.message) {
-            case INVALID_EMAIL:
+            case errors.INVALID_EMAIL:
               alert('유효하지 않은 이메일 형식입니다.');
               break;
-            case INVALID_PASSWORD:
+            case errors.INVALID_PASSWORD:
               alert('비밀번호는 6자 이상으로 설정해주세요.');
               break;
-            case EXISTING_EMAIL:
+            case errors.EXISTING_EMAIL:
               alert('이미 존재하는 이메일입니다.');
               break;
-            case INVALID_INPUT:
+            case errors.INVALID_INPUT:
               alert('유효하지 않은 입력값입니다.');
               break;
             default:
