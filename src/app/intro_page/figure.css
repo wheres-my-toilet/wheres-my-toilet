@@ -1,0 +1,22 @@
+.ladder {
+  width: 80px;
+  height: 0;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-top: 250px solid white;
+  top: 130px;
+  left: 50%;
+  transform: translateX(-15%) translateY(-115%);
+  scale: 2.5;
+  overflow: hidden;
+}
+
+.circle {
+  width: 180px;
+  height: 180px;
+  background-color: #fff;
+  opacity: 0.95;
+  position: absolute;
+  border-radius: 50%;
+  z-index: -2;
+}
