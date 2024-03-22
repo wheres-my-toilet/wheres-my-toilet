@@ -9,14 +9,13 @@ import { Location } from '@/types/home_page/types';
 import findNearestLocation from '@/util/home_page/findNearestLocation';
 import { Map } from 'react-kakao-maps-sdk';
 
-export default function HomePage() {
+const HomePage = () => {
   const { userLocation } = useUserLocationStore();
   const { locationInfoData } = useGetData();
-  const { selectSee, selectGunGue, selectState, handleSelectCity, handleSelectCounty } = useSelectForm();
-  const nearestLocation: Location | null = findNearestLocation(userLocation, locationInfoData);
+  const { selectSee, selectGunGue, selectState, handleSelectCity, handleSelectCounty, selectLevel } = useSelectForm();
+  const nearestLocation: Location | null = findNearestLocation({ userLocation: userLocation, data: locationInfoData });
   const filterData = locationInfoData?.filter(
-    (location) =>
-      location.toilet_address?.trim().includes(selectSee) && location.toilet_address?.trim().includes(selectGunGue),
+    (location) => location.toilet_address?.includes(selectSee) && location.toilet_address?.includes(selectGunGue),
   );
 
   return (
@@ -28,23 +27,21 @@ export default function HomePage() {
         handleSelectCounty={handleSelectCounty}
       />
 
-      <section>
+      <section className="flex mt-20    ">
         <HomeCategory />
-        <main className="m-10">
-          <Map
-            id="map"
-            center={selectState.center}
-            isPanto={selectState.isPanto}
-            style={{
-              width: '100%',
-              height: '350px',
-            }}
-            level={15}
-          >
-            <HomePageMap userLocation={userLocation} nearestLocation={nearestLocation} filterData={filterData} />
-          </Map>
-        </main>
+
+        <Map
+          id="map"
+          center={selectState.center}
+          isPanto={selectState.isPanto}
+          className="mx-4 w-10/12 h-86 rounded-lg"
+          level={selectLevel}
+        >
+          <HomePageMap userLocation={userLocation} nearestLocation={nearestLocation} filterData={filterData} />
+        </Map>
       </section>
     </>
   );
-}
+};
+
+export default HomePage;

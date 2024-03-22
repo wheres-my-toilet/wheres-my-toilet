@@ -2,6 +2,8 @@ import { HomePageType } from '@/types/home_page/types';
 import { MapMarker } from 'react-kakao-maps-sdk';
 
 function HomePageMap({ filterData, nearestLocation, userLocation }: HomePageType) {
+  console.log(filterData);
+
   return (
     <>
       {nearestLocation && (

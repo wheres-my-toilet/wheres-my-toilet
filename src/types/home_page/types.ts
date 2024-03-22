@@ -1,6 +1,6 @@
 import { ChangeEvent } from 'react';
 
-export interface Location {
+export type Location = {
   toilet_address: string;
   toilet_baby_diaper: string | null;
   toilet_id: number;
@@ -8,22 +8,29 @@ export interface Location {
   toilet_longitude: number;
   toilet_name: string;
   toilet_opening_hours: string | null;
-}
+};
 
-export interface UserLocation {
+export type UserLocation = {
   lat: number;
   lng: number;
-}
+};
 
-export interface HomePageType {
+export type HomePageType = {
   userLocation: UserLocation;
   filterData: Location[] | undefined;
   nearestLocation: Location | null;
-}
+};
 
-export interface HomeSelectFormType {
+export type HomeSelectFormType = {
   selectSee: string;
   selectGunGue: string;
   handleSelectCity(event: ChangeEvent<HTMLSelectElement>): void;
   handleSelectCounty(event: ChangeEvent<HTMLSelectElement>): void;
-}
+};
+
+export type Distance = {
+  lat1: number;
+  lon1: number;
+  lat2: number;
+  lon2: number;
+};

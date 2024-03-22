@@ -1,4 +1,6 @@
-export default function getDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
+import { Distance } from '@/types/home_page/types';
+
+export default function getDistance({ lat1, lon1, lat2, lon2 }: Distance): number {
   const R = 6371; // 지구의 반지름 (단위: km)
   const dLat = (lat2 - lat1) * (Math.PI / 180);
   const dLon = (lon2 - lon1) * (Math.PI / 180);
