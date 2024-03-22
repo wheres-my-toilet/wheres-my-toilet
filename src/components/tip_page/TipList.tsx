@@ -2,7 +2,7 @@
 
 import { supabase } from '@/shared/supabase/supabase';
 import { useQuery } from '@tanstack/react-query';
-import React, { useEffect, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import TipCard from './TipCard';
 import TipModal from './TipModal';
 
@@ -17,6 +17,7 @@ export type Tip = {
 const TipList = () => {
   const [selectedTip, setSelectedTip] = useState<Tip | null>(null); // 선택된 팁 상태
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 열림 상태
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null);
 
   const fetchData = async (): Promise<Tip[]> => {
     try {
@@ -33,6 +34,14 @@ const TipList = () => {
     } catch (error) {
       console.error(error);
       throw error;
+    }
+  };
+
+  const handleScroll = (direction: 'left' | 'right'): void => {
+    const container = scrollContainerRef.current;
+    if (container) {
+      const scrollAmount = container.offsetWidth + 200;
+      container.scrollLeft += direction === 'left' ? -scrollAmount : scrollAmount;
     }
   };
 
@@ -62,17 +71,19 @@ const TipList = () => {
   console.log(data);
 
   return (
-    <div className="flex justify-center mt-3">
-      <div className="w-4/5 flex gap-4 flex-wrap">
+    <div className="flex justify-center items-center mt-12">
+      <button onClick={() => handleScroll('left')} className="mr-2 text-4xl">
+        {'<'}
+      </button>
+      <div className="w-4/5 flex gap-4 overflow-x-hidden" ref={scrollContainerRef}>
         {data?.map((item) => (
-          // 카드 클릭 이벤트 핸들러를 전달하고 카드 컴포넌트에 포함
           <TipCard key={item.id} tip={item} handleCardClick={() => handleCardClick(item)} />
         ))}
       </div>
-      {/* 모달 컴포넌트 */}
-      {isModalOpen && selectedTip && (
-        <TipModal tip={selectedTip} handleCloseModal={handleCloseModal} /> // onClose prop 전달
-      )}
+      <button onClick={() => handleScroll('right')} className="ml-2 text-4xl">
+        {'>'}
+      </button>
+      {isModalOpen && selectedTip && <TipModal tip={selectedTip} handleCloseModal={handleCloseModal} />}
     </div>
   );
 };

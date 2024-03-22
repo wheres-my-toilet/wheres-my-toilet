@@ -10,10 +10,12 @@ interface TipCardProps {
 
 const TipCard: React.FC<TipCardProps> = ({ tip, handleCardClick }) => {
   return (
-    <div className="border-black border-2 h-64 w-80" onClick={handleCardClick}>
-      <img src={tip.tip_photos} className="w-80 h-40" />
-      <p className="truncate">{tip.title}</p>
-      <p className="truncate">{tip.content}</p>
+    <div className=" border-black border-2 h-[30rem] w-[32rem] rounded-mg" onClick={handleCardClick}>
+      <img src={tip.tip_photos} className="w-[32rem] h-64" />
+      <div className=" flex flex-col items-center ">
+        <p className="truncate font-bold text-3xl mb-5 mt-3">{tip.title}</p>
+        <p className="truncate w-[31rem]">{tip.content}</p>
+      </div>
     </div>
   );
 };
