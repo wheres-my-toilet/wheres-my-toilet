@@ -34,12 +34,23 @@ const HomePage = () => {
           id="map"
           center={selectState.center}
           isPanto={selectState.isPanto}
-          className="mx-4 w-10/12 h-86 rounded-lg"
+          className="mx-4 w-9/12 h-86 rounded-lg"
           level={selectLevel}
         >
           <HomePageMap userLocation={userLocation} nearestLocation={nearestLocation} filterData={filterData} />
         </Map>
       </section>
+
+      {nearestLocation && (
+        <figure key={nearestLocation.toilet_id}>
+          화장실 이름 : <p>{nearestLocation.toilet_name}</p>
+          주소 : <p>{nearestLocation.toilet_address}</p>
+          <figcaption>
+            <p>{nearestLocation.toilet_latitude}</p>
+            <p>{nearestLocation.toilet_longitude}</p>
+          </figcaption>
+        </figure>
+      )}
     </>
   );
 };

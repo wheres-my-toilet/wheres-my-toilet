@@ -7,9 +7,10 @@ function HomePageMap({ filterData, nearestLocation, userLocation }: HomePageType
   return (
     <>
       {nearestLocation && (
-        <MapMarker position={{ lat: nearestLocation.toilet_latitude, lng: nearestLocation.toilet_longitude }}>
-          <div className="text-black font-bold  text-sm  m-2 ">{nearestLocation.toilet_name}</div>
-        </MapMarker>
+        <MapMarker
+          position={{ lat: nearestLocation.toilet_latitude, lng: nearestLocation.toilet_longitude }}
+          title={nearestLocation.toilet_name}
+        />
       )}
 
       <MapMarker position={userLocation}>
@@ -27,7 +28,7 @@ function HomePageMap({ filterData, nearestLocation, userLocation }: HomePageType
             lng: location.toilet_longitude,
           }}
           image={{
-            src: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png',
+            src: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png',
             size: {
               width: 24,
               height: 35,
