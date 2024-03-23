@@ -49,7 +49,9 @@ function ReviewBookMark({ id }: { id: number }) {
   }, [id]);
   return (
     <div className="flex items-center justify-around align-middle">
-      <h2 className="text-center text-black font-medium rounded-xl text-3xl p-5 pb-6">{toiletLocation?.toilet_name}</h2>
+      <h2 className="text-center text-black font-medium rounded-xl text-3xl p-5 pb-6 flex gap-3">
+        {toiletLocation?.toilet_name}
+      </h2>
       <button
         className={`flex flex-col text-3xl ${bookMarkMode ? 'text-amber-300' : null} -translate-y-1 items-center gap-1`}
         onClick={bookMarkMode ? handleAddBookMark : handleDeleteBookMark}

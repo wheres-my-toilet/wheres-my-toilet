@@ -5,7 +5,6 @@ import { getReviewToiletId } from '../../../api/reviewQuery/queryFunction';
 import { getAverage, getAverageRate, getReviewContentAverage, getStarRating } from '../../../util/detail_page/getRate';
 
 import type { review_info } from '../../../types/reviewType';
-
 const reviewType = { clean: '청결도', location: '위치', population: '인구 밀도' };
 
 function ReviewRate({ id }: { id: number }) {
@@ -16,7 +15,7 @@ function ReviewRate({ id }: { id: number }) {
 
   return (
     <div className="flex flex-col align-middle justify-center items-center">
-      <h2 className="text-center text-2xl mb-3 font-medium ">평점</h2>
+      <h2 className="text-center text-2xl mb-3 font-medium flex">평점</h2>
       {review && review.length === 0 ? (
         <p className="w-60 h-14 text-center py-4 bg-black text-white rounded-xl my-4 ml-auto mr-auto">
           등록된 평점이 없습니다. 첫 평점을 남겨주세요!

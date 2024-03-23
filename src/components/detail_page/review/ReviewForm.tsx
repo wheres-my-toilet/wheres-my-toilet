@@ -1,7 +1,8 @@
 'use client';
+
 import React, { useState } from 'react';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { addReview, getUser } from '../../../api/reviewQuery/queryFunction';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { addReview } from '../../../api/reviewQuery/queryFunction';
 import { useLoggedInUserStore } from '@/shared/store/LoggedInUser';
 
 function ReviewForm({ id }: { id: number }) {
@@ -52,77 +53,75 @@ function ReviewForm({ id }: { id: number }) {
   };
 
   return (
-    <>
-      <h2 className="w-60 h-14 text-center py-4  bg-black text-white rounded-xl my-4 ml-auto mr-auto">사용자 리뷰</h2>
-      <form className="flex flex-col items-center" onSubmit={handleAddReview}>
-        <label className="mb-2">
-          청결도 :&nbsp;
-          <select
-            value={toiletRate.cleanRate}
-            onChange={(e) => {
-              const { value } = e.target;
-              setToiletRate((prev) => ({ ...prev, cleanRate: +value }));
-            }}
-          >
-            <option>점수를 주세요</option>
-            <option value={5}>⭐⭐⭐⭐⭐</option>
-            <option value={4}>⭐⭐⭐⭐</option>
-            <option value={3}>⭐⭐⭐</option>
-            <option value={2}>⭐⭐</option>
-            <option value={1}>⭐</option>
-          </select>
-        </label>
-        <label className=" mb-2">
-          위치 :&nbsp;
-          <select
-            value={toiletRate.locationRate}
-            onChange={(e) => {
-              const { value } = e.target;
-              setToiletRate((prev) => ({ ...prev, locationRate: +value }));
-            }}
-          >
-            <option>위치 점수를&nbsp;주세요</option>
-            <option value={5}>⭐⭐⭐⭐⭐</option>
-            <option value={4}>⭐⭐⭐⭐</option>
-            <option value={3}>⭐⭐⭐</option>
-            <option value={2}>⭐⭐</option>
-            <option value={1}>⭐</option>
-          </select>
-        </label>
-        <label className=" mb-2">
-          인구밀도 :&nbsp;
-          <select
-            value={toiletRate.popRate}
-            onChange={(e) => {
-              const { value } = e.target;
-              setToiletRate((prev) => ({ ...prev, popRate: +value }));
-            }}
-          >
-            <option>인구밀도 정도를&nbsp;매겨주세요</option>
-            <option value={5}>⭐⭐⭐⭐⭐</option>
-            <option value={4}>⭐⭐⭐⭐</option>
-            <option value={3}>⭐⭐⭐</option>
-            <option value={2}>⭐⭐</option>
-            <option value={1}>⭐</option>
-          </select>
-        </label>
-        <div>
-          <input
-            className="w-1/2 h-14 text-base border-0 rounded-full outline-none pl-2.5 mr-2.5 bg-slate-100 indent-0.5"
-            type="text"
-            value={reviewContent}
-            placeholder="리뷰를 입력해주세요~"
-            onChange={(e) => {
-              setReviewContent(e.target.value);
-            }}
-          />
-          <button className="w-48 h-14 text-center py-4  bg-black text-white rounded-xl my-4">
-            리뷰를 올려 주세요
-          </button>
+    <div className="flex flex-col items-center mb-10">
+      <h2 className="text-2xl mb-3 font-medium">사용자 리뷰</h2>
+      <form className="flex flex-col items-center gap-4" onSubmit={handleAddReview}>
+        <div className="flex flex-col gap-2 w-full">
+          <label className="flex items-center justify-between ">
+            <p>청결도 :</p>
+            <select
+              className="text-center"
+              value={toiletRate.cleanRate}
+              onChange={(e) => {
+                const { value } = e.target;
+                setToiletRate((prev) => ({ ...prev, cleanRate: +value }));
+              }}
+            >
+              <Option />
+            </select>
+          </label>
+          <label className="flex items-center justify-between">
+            <p>위치 :</p>
+            <select
+              className="text-center"
+              value={toiletRate.locationRate}
+              onChange={(e) => {
+                const { value } = e.target;
+                setToiletRate((prev) => ({ ...prev, locationRate: +value }));
+              }}
+            >
+              <Option />
+            </select>
+          </label>
+          <label className="flex items-center justify-between">
+            <p>인구밀도 :</p>
+            <select
+              className="text-center"
+              value={toiletRate.popRate}
+              onChange={(e) => {
+                const { value } = e.target;
+                setToiletRate((prev) => ({ ...prev, popRate: +value }));
+              }}
+            >
+              <Option />
+            </select>
+          </label>
         </div>
+        <textarea
+          className="w-full h-32 text-base border-2 rounded-lg px-4 py-2 resize-none"
+          value={reviewContent}
+          placeholder="리뷰를 입력해주세요."
+          onChange={(e) => {
+            setReviewContent(e.target.value);
+          }}
+        />
+        <button className="w-full py-3 bg-black text-white rounded-lg">리뷰를 올려주세요</button>
       </form>
-    </>
+    </div>
   );
 }
 
 export default ReviewForm;
+
+const Option = () => {
+  return (
+    <>
+      <option>-----</option>
+      <option value={5}>⭐⭐⭐⭐⭐</option>
+      <option value={4}>⭐⭐⭐⭐</option>
+      <option value={3}>⭐⭐⭐</option>
+      <option value={2}>⭐⭐</option>
+      <option value={1}>⭐</option>
+    </>
+  );
+};
