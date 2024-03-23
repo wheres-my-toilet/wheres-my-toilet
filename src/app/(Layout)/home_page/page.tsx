@@ -5,21 +5,39 @@ import HomeCategory from '@/components/home_page/HomeCategory';
 import useSelectForm from '@/hooks/home_page/useSelectForm';
 import useGetData from '@/hooks/home_page/useGetData';
 import { useUserLocationStore } from '@/shared/store/UserLocation';
-import { Location } from '@/types/home_page/types';
+import { NearestLocation } from '@/types/home_page/types';
 import findNearestLocation from '@/util/home_page/findNearestLocation';
 import { Map } from 'react-kakao-maps-sdk';
+import { useEffect, useState } from 'react';
+import { supabase } from '@/shared/supabase/supabase';
+
+type Review_info = {
+  review_id: number;
+  toilet_loc_rate: number;
+  toilet_clean_rate: number | null;
+  toilet_pop_rate: number;
+};
 
 const HomePage = () => {
   const { userLocation } = useUserLocationStore();
   const { locationInfoData } = useGetData();
   const { selectSee, selectGunGue, selectState, handleSelectCity, handleSelectCounty, selectLevel } = useSelectForm();
-  const nearestLocation: Location[] | null = findNearestLocation({
+  const nearestLocation: NearestLocation[] | null = findNearestLocation({
     userLocation: userLocation,
     data: locationInfoData,
   });
   const filterData = locationInfoData?.filter(
     (location) => location.toilet_address?.includes(selectSee) && location.toilet_address?.includes(selectGunGue),
   );
+
+  async function getReview() {
+    const { data: review_info, error } = await supabase
+      .from('review_info')
+      .select('review_id , toilet_loc_rate , toilet_clean_rate , toilet_pop_rate , toilet_id  ');
+  }
+  useEffect(() => {
+    getReview();
+  }, []);
 
   return (
     <>
@@ -45,13 +63,12 @@ const HomePage = () => {
       </section>
 
       {nearestLocation &&
-        nearestLocation.map((location) => (
+        nearestLocation.map((location: NearestLocation) => (
           <figure key={location.toilet_id} className="m-4">
             화장실 이름 : <p>{location.toilet_name}</p>
             주소 : <p>{location.toilet_address}</p>
             <figcaption>
-              <p>{location.toilet_latitude}</p>
-              <p>{location.toilet_longitude}</p>
+              <small>거리:{location.toilet_distance}</small>
             </figcaption>
           </figure>
         ))}

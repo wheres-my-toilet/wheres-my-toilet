@@ -34,7 +34,7 @@ export type Database = {
           review_content: string | null;
           review_createdat: string;
           review_id: number;
-          toilet_clean_rate: number | null;
+          toilet_clean_rate: number;
           toilet_id: number | null;
           toilet_loc_rate: number;
           toilet_pop_rate: number;
