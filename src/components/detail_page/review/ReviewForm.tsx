@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { addReview, getUser } from '../../../api/reviewQuery/queryFunction';
+import { useLoggedInUserStore } from '@/shared/store/LoggedInUser';
 
 function ReviewForm({ id }: { id: number }) {
   const queryClient = useQueryClient();
@@ -57,7 +58,7 @@ function ReviewForm({ id }: { id: number }) {
     <>
       <h2 className="w-60 h-14 text-center py-4  bg-black text-white rounded-xl my-4 ml-auto mr-auto">사용자 리뷰</h2>
       <form className="flex flex-col items-center" onSubmit={handleAddReview}>
-        <label className="w-4/6 mb-2">
+        <label className="mb-2">
           청결도 :&nbsp;
           <select
             value={toiletRate.cleanRate}
@@ -74,7 +75,7 @@ function ReviewForm({ id }: { id: number }) {
             <option value={1}>⭐</option>
           </select>
         </label>
-        <label className="w-4/6 mb-2">
+        <label className=" mb-2">
           위치 :&nbsp;
           <select
             value={toiletRate.locationRate}
@@ -91,7 +92,7 @@ function ReviewForm({ id }: { id: number }) {
             <option value={1}>⭐</option>
           </select>
         </label>
-        <label className="w-4/6 mb-2">
+        <label className=" mb-2">
           인구밀도 :&nbsp;
           <select
             value={toiletRate.popRate}
@@ -110,6 +111,7 @@ function ReviewForm({ id }: { id: number }) {
         </label>
         <div>
           <input
+            className="w-1/2 h-14 text-base border-0 rounded-full outline-none pl-2.5 mr-2.5 bg-slate-100 indent-0.5"
             type="text"
             value={reviewContent}
             placeholder="리뷰를 입력해주세요~"
@@ -117,7 +119,9 @@ function ReviewForm({ id }: { id: number }) {
               setReviewContent(e.target.value);
             }}
           />
-          <button>리뷰를 올려 주세요</button>
+          <button className="w-48 h-14 text-center py-4  bg-black text-white rounded-xl my-4">
+            리뷰를 올려 주세요
+          </button>
         </div>
       </form>
     </>

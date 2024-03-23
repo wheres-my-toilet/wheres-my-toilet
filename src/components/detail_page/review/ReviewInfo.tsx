@@ -12,11 +12,11 @@ function ReviewInfo({ id }: { id: number }) {
     queryFn: () => getReviewToiletId(id),
   });
   return (
-    <>
+    <div className="flex flex-col items-center mb-8">
       {review?.map((info) => (
         <ReviewContent key={info.review_id} info={info} />
       ))}
-    </>
+    </div>
   );
 }
 
