@@ -3,9 +3,12 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
-import logoImage from '../assets/images/logo.png';
+
 import { useUserLocationStore } from '@/shared/store/UserLocation';
 import { BiCurrentLocation } from 'react-icons/bi';
+import { getAddress } from '@/util/header/getAddress';
+
+import logoImage from '../assets/images/logo.png';
 
 const Header = () => {
   const [userAddress, setUserAddress] = useState('');
@@ -18,27 +21,8 @@ const Header = () => {
     });
   };
 
-  //kakao rest api 위도/경도 -> 주소 변환
-  const getAddress = async () => {
-    try {
-      const response = await fetch(
-        `https://dapi.kakao.com/v2/local/geo/coord2address.json?x=${userLocation.lng}&y=${userLocation.lat}`,
-        {
-          headers: {
-            Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}`,
-          },
-        },
-      );
-      const { documents } = await response.json();
-      const address = documents[0]?.address;
-      setUserAddress(address.region_1depth_name + ' ' + address.region_2depth_name);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   useEffect(() => {
-    getAddress();
+    getAddress({ setUserAddress, userLocation });
   }, [userLocation]);
 
   useEffect(() => {
