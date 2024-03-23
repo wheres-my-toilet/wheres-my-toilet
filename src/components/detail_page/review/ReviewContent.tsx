@@ -41,13 +41,16 @@ function ReviewContent({ info }: { info: review_info }) {
   const handleChangeReview = async (reviewId: number) => {
     if (!changeText) {
       return;
+    } else {
+      changeReviewMutation.mutate({ review_id: reviewId, changeText });
     }
-
-    changeReviewMutation.mutate({ review_id: reviewId, changeText });
   };
 
   const handleDeleteReview = async (reviewId: number) => {
-    deletesReviewMutation.mutate(reviewId);
+    const confirm = window.confirm('삭제하시겠습니까?');
+    if (confirm) {
+      deletesReviewMutation.mutate(reviewId);
+    }
   };
 
   const handleToggle = (reviewId: number) => {
@@ -59,45 +62,68 @@ function ReviewContent({ info }: { info: review_info }) {
 
   const user = data?.user_metadata.email;
   return (
-    <div key={info.review_id}>
-      <p>닉네임 : {info.user_nickname}</p>
+    <div className="border border-stone-950 rounded-2xl mb-4 w-9/12 py-6 px-3" key={info.review_id}>
+      <div className="flex justify-between">
+        <span>닉네임 : {info.user_nickname}</span>
+        <p className="flex gap-1">
+          <span className="text-amber-400 text-sm">{getLocationDate(info.review_createdat)}</span>
+          <span className="w-28 text-right">
+            {getRate(info.toilet_clean_rate, info.toilet_loc_rate, info.toilet_pop_rate)}
+          </span>
+        </p>
+      </div>
       <div>
-        <span>작성일 : {getLocationDate(info.review_createdat)}</span>
-        <span>{getRate(info.toilet_clean_rate, info.toilet_loc_rate, info.toilet_pop_rate)}</span>
         <div>
           {changeMode ? (
             <>
-              <input
-                type="text"
+              <textarea
+                className="w-full h-28 text-base border-0 outline-none p-2.5 mr-2.5 bg-slate-100 my-2 resize-none"
                 value={changeText}
                 onChange={(e) => {
                   setChangeText(e.target.value);
                 }}
               />
-              <div>
+              <div className="flex gap-3 mt-2 justify-end">
                 {user === info.user_id && (
                   <>
                     <button
+                      className="bg-black text-white rounded-2xl py-3 px-6 cursor-pointer"
                       onClick={() => {
                         handleChangeReview(info.review_id);
-                        setChangeMode((prev) => !prev);
                       }}
                     >
                       완료
                     </button>
-                    <button onClick={() => handleDeleteReview(info.review_id)}>삭제</button>
+                    <button
+                      className="bg-black text-white rounded-2xl py-3 px-6 cursor-pointer"
+                      onClick={() => handleDeleteReview(info.review_id)}
+                    >
+                      삭제
+                    </button>
                   </>
                 )}
               </div>
             </>
           ) : (
             <>
-              <p>{info.review_content}</p>
-              <div>
+              <p className="w-full h-28 text-base border-0 outline-none p-2.5 mr-2.5 bg-slate-100 my-2">
+                {info.review_content}
+              </p>
+              <div className="flex gap-3 mt-2 justify-end">
                 {user === info.user_id && (
                   <>
-                    <button onClick={() => handleToggle(info.review_id)}>수정</button>
-                    <button onClick={() => handleDeleteReview(info.review_id)}>삭제</button>
+                    <button
+                      className="bg-black text-white rounded-2xl py-3 px-6 cursor-pointer"
+                      onClick={() => handleToggle(info.review_id)}
+                    >
+                      수정
+                    </button>
+                    <button
+                      className="bg-black text-white rounded-2xl py-3 px-6 cursor-pointer"
+                      onClick={() => handleDeleteReview(info.review_id)}
+                    >
+                      삭제
+                    </button>
                   </>
                 )}
               </div>

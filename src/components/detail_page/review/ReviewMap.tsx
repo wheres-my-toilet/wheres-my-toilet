@@ -28,7 +28,7 @@ function ReviewMap({ id }: { id: number }) {
   }, [id]);
   return (
     <div className="flex flex-col">
-      <h2 className="w-60 h-14 text-center py-4 px-6 bg-black text-white rounded-xl my-4 ml-auto mr-auto">
+      <h2 className="w-60 h-14 text-center py-4 px-6 bg-black text-white rounded-xl mt-8 mb-4 ml-auto mr-auto">
         {toiletLocation?.toilet_name}
       </h2>
       <section className="">

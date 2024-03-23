@@ -1,3 +1,4 @@
+import ReviewBookMark from '@/components/detail_page/review/ReviewBookMark';
 import ReviewForm from '@/components/detail_page/review/ReviewForm';
 import ReviewInfo from '@/components/detail_page/review/ReviewInfo';
 import ReviewMap from '@/components/detail_page/review/ReviewMap';
@@ -15,6 +16,9 @@ function DetailPage({
 
   return (
     <div className="flex flex-col">
+      <div>
+        <ReviewBookMark id={id} />
+      </div>
       <ReviewMap id={id} />
       <section>
         <ReviewRate id={id} />
