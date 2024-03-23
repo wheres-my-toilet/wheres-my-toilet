@@ -1,5 +1,6 @@
 'use client';
 
+import { findPassword } from '@/util/find_password_page/findPassword';
 import Link from 'next/link';
 import React, { useState } from 'react';
 
@@ -11,11 +12,15 @@ const Reset = () => {
     setEmail(e.target.value);
   };
 
+  const sendEmail = () => {
+    findPassword({ email, setEmail });
+  };
+
   return (
     <div className="flex items-center justify-center h-screen">
       <div className="text-left">
         <h1 className="text-4xl font-semibold ">비밀번호 재설정하기</h1>
-        <form className="flex flex-col pt-10">
+        <form className="flex flex-col pt-10" onSubmit={sendEmail}>
           <label htmlFor="email">이메일</label>
           <input
             id="email"
