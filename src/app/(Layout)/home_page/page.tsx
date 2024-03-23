@@ -8,7 +8,6 @@ import { useUserLocationStore } from '@/shared/store/UserLocation';
 import { Location } from '@/types/home_page/types';
 import findNearestLocation from '@/util/home_page/findNearestLocation';
 import { Map } from 'react-kakao-maps-sdk';
-import { useLoggedInUserStore } from '@/shared/store/LoggedInUser';
 
 const HomePage = () => {
   const { userLocation } = useUserLocationStore();
