@@ -13,8 +13,6 @@ import { useLoggedInUserStore } from '@/shared/store/LoggedInUser';
 const HomePage = () => {
   const { userLocation } = useUserLocationStore();
   const { locationInfoData } = useGetData();
-  const { userData } = useLoggedInUserStore();
-  console.log(userData);
   const { selectSee, selectGunGue, selectState, handleSelectCity, handleSelectCounty, selectLevel } = useSelectForm();
   const nearestLocation: Location | null = findNearestLocation({ userLocation: userLocation, data: locationInfoData });
   const filterData = locationInfoData?.filter(
