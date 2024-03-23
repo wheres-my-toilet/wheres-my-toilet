@@ -13,10 +13,7 @@ function ReviewForm({ id }: { id: number }) {
   });
   const [reviewContent, setReviewContent] = useState('');
 
-  const { data } = useQuery({
-    queryKey: ['user'],
-    queryFn: getUser,
-  });
+  const { email, nickname } = useLoggedInUserStore((state) => state.userData);
 
   const addMutation = useMutation({
     mutationFn: addReview,
@@ -40,16 +37,16 @@ function ReviewForm({ id }: { id: number }) {
     }
     const newReview = {
       review_id: Math.floor(Math.random() * 500),
-      user_id: data?.user_metadata.email,
+      user_id: email,
       review_content: reviewContent,
       toilet_id: id,
-      user_nickname: data?.user_metadata.display_name,
+      user_nickname: nickname,
       toilet_clean_rate: toiletRate.cleanRate,
       toilet_loc_rate: toiletRate.locationRate,
       toilet_pop_rate: toiletRate.popRate,
     };
 
-    if (data) {
+    if (email) {
       addMutation.mutate(newReview);
     }
   };
