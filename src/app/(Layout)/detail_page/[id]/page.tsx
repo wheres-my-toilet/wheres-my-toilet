@@ -16,9 +16,7 @@ function DetailPage({
 
   return (
     <div className="flex flex-col">
-      <div>
-        <ReviewBookMark id={id} />
-      </div>
+      <ReviewBookMark id={id} />
       <ReviewMap id={id} />
       <section>
         <ReviewRate id={id} />

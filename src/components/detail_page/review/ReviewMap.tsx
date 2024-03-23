@@ -26,11 +26,9 @@ function ReviewMap({ id }: { id: number }) {
 
     getToiletLocation();
   }, [id]);
+
   return (
     <div className="flex flex-col">
-      <h2 className="w-60 h-14 text-center py-4 px-6 bg-black text-white rounded-xl mt-8 mb-4 ml-auto mr-auto">
-        {toiletLocation?.toilet_name}
-      </h2>
       <section className="">
         {toiletLocation?.toilet_latitude && toiletLocation?.toilet_longitude && (
           <Map
@@ -40,7 +38,7 @@ function ReviewMap({ id }: { id: number }) {
               lng: toiletLocation.toilet_longitude,
             }}
             style={{
-              width: '50%',
+              width: '85%',
               height: '350px',
               margin: 'auto',
               marginBottom: '20px',
