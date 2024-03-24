@@ -16,11 +16,13 @@ import { supabase } from '@/shared/supabase/supabase';
 import { useQuery } from '@tanstack/react-query';
 import { getUser } from '@/api/reviewQuery/queryFunction';
 import { useLogoutMutation } from '@/util/header/logoutQuery';
+import { useLoggedInUserStore } from '@/shared/store/LoggedInUser';
 
 const Header = () => {
   const [userAddress, setUserAddress] = useState('');
   const { userLocation, setLocation } = useUserLocationStore();
   const logoutMutation = useLogoutMutation();
+  const { setUserData } = useLoggedInUserStore();
 
   const { data } = useQuery({
     queryKey: ['user'],
@@ -38,6 +40,11 @@ const Header = () => {
 
   const handleClickLogout = async () => {
     logoutMutation.mutate();
+    setUserData({
+      email: '',
+      user_uid: '',
+      nickname: 'poopy',
+    });
   };
 
   useEffect(() => {
