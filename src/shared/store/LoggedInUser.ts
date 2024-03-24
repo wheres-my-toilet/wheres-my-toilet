@@ -16,7 +16,7 @@ export const useLoggedInUserStore = create<Store>()(
     }),
     {
       name: 'loggedin-store',
-      storage: createJSONStorage(() => sessionStorage),
+      storage: createJSONStorage(() => localStorage),
       version: 1.0,
     },
   ),
