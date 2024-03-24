@@ -73,6 +73,8 @@ function ReviewBookMark({ id }: { id: number }) {
   useEffect(() => {
     if (bookmarkData && bookmarkData.length > 0) {
       setBookMarkMode(true);
+    } else {
+      setBookMarkMode(false);
     }
   }, [bookmarkData]);
 
