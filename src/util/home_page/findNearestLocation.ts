@@ -1,4 +1,4 @@
-import { Location, UserLocation } from '@/types/home_page/types';
+import { Location, NearestLocation, UserLocation } from '@/types/home_page/types';
 import getDistance from './getDistance';
 
 export default function findNearestLocation({
@@ -7,9 +7,10 @@ export default function findNearestLocation({
 }: {
   userLocation: UserLocation;
   data: Location[] | null;
-}): Location | null {
+}): NearestLocation[] | null {
   let minDistance = Infinity;
-  let nearestLocation = null;
+
+  const nearestLocation: NearestLocation[] = [];
 
   data?.forEach((location) => {
     const distance = getDistance({
@@ -21,9 +22,19 @@ export default function findNearestLocation({
 
     if (distance < minDistance) {
       minDistance = distance;
-      nearestLocation = location;
+
+      nearestLocation.push({
+        toilet_distance: distance,
+        toilet_address: location.toilet_address,
+        toilet_baby_diaper: location.toilet_baby_diaper,
+        toilet_id: location.toilet_id,
+        toilet_latitude: location.toilet_latitude,
+        toilet_longitude: location.toilet_longitude,
+        toilet_name: location.toilet_name,
+        toilet_opening_hours: location.toilet_opening_hours,
+      });
     }
   });
 
-  return nearestLocation;
+  return nearestLocation.reverse();
 }
