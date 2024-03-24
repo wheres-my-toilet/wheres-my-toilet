@@ -19,15 +19,11 @@ function HomePageMap({ filterData, nearestLocation, userLocation }: HomePageType
       ))}
 
       <MapMarker
-        position={userLocation}
-        image={{
-          src: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png',
-          size: {
-            width: 24,
-            height: 35,
-          },
-        }}
-      />
+        position={userLocation} >
+          <div >
+            <b>it's me</b>
+          </div>
+        </MapMarker>
 
       {filterData?.map((location) => (
         <MapMarker
