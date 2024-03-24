@@ -7,7 +7,7 @@ export type Bookmark = {
     toilet_address: string;
     toilet_name: string;
   };
-  user_id: string;
+  user_uid: string;
 };
 
 export type ReviewRate = {
@@ -18,12 +18,12 @@ export type ReviewRate = {
 };
 
 //유저의 북마크 목록 조회
-export const getData = async (user_id: string): Promise<Bookmark[]> => {
+export const getData = async (user_uid: string): Promise<Bookmark[]> => {
   try {
     const { data, error } = await supabase
       .from('bookmark')
       .select('*, toilet_location(toilet_name, toilet_address)')
-      .eq('user_id', user_id);
+      .eq('user_uid', user_uid);
 
     if (error) {
       console.error('Error fetching data:', error.message);
