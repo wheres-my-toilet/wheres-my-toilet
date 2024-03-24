@@ -2,6 +2,8 @@
 import { useLoggedInUserStore } from '@/shared/store/LoggedInUser';
 import { supabase } from '@/shared/supabase/supabase';
 import { Database } from '@/shared/supabase/types/supabase';
+import { Bookmark, getBookmark } from '@/util/detail_page/api';
+import { useQuery } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 
 import { CiStar } from 'react-icons/ci';
@@ -11,6 +13,12 @@ function ReviewBookMark({ id }: { id: number }) {
   const [bookMarkMode, setBookMarkMode] = useState(false);
   const [toiletLocation, setToiletLocation] = useState<Database['public']['Tables']['toilet_location']['Row']>();
   const { user_uid } = useLoggedInUserStore((state) => state.userData);
+
+  const { data: bookmarkData } = useQuery<Bookmark[]>({
+    queryFn: () => getBookmark(user_uid, id),
+    queryKey: ['detailBookmark'],
+    enabled: !!user_uid,
+  });
 
   const handleAddBookMark = async () => {
     if (user_uid === '') {
@@ -30,7 +38,10 @@ function ReviewBookMark({ id }: { id: number }) {
     if (user_uid === '') {
       return;
     }
-    const { error } = await supabase.from('bookmark').delete().eq(user_uid, user_uid);
+    const { error } = await supabase
+      .from('bookmark')
+      .delete()
+      .eq('bookmark_id', bookmarkData?.[0].bookmark_id as number);
     setBookMarkMode((prev) => !prev);
   };
 
@@ -53,6 +64,13 @@ function ReviewBookMark({ id }: { id: number }) {
 
     getToiletLocation();
   }, [id]);
+
+  useEffect(() => {
+    if (bookmarkData && bookmarkData.length > 0) {
+      setBookMarkMode(true);
+    }
+  }, [bookmarkData]);
+
   return (
     <div className="flex items-center justify-around align-middle">
       <h2 className="text-center text-black font-medium rounded-xl text-3xl p-5 pb-6 flex gap-3">
