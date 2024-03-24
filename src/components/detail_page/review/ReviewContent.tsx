@@ -9,7 +9,7 @@ import type { review_info } from '../../../types/reviewType';
 
 function ReviewContent({ info }: { info: review_info }) {
   const [changeMode, setChangeMode] = useState(false);
-  const [changeText, setChangeText] = useState('');
+  const [changeText, setChangeText] = useState(info.review_content);
 
   const queryClient = useQueryClient();
 

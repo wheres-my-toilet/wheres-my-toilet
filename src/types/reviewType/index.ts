@@ -1,5 +1,5 @@
 export type review_info = {
-  review_content: string | null;
+  review_content: string;
   review_createdat: string;
   review_id: number;
   toilet_clean_rate: number | null;
