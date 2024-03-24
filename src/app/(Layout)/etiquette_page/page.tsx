@@ -14,12 +14,12 @@ const images = [
 const Page = () => {
   return (
     <div>
-      <div className="h-72 border-t-2 border-black border-b-2 flex items-center flex-col justify-center">
-        <h1 className="text-4xl mb-3"> 지켜줘요, 우리의 눈.</h1>
-        <h1 className="text-4xl"> 지켜줘요, 화장실 에티켓!</h1>
+      <div className="h-48 md:h-72 border-t-2 border-black border-b-2 flex items-center flex-col justify-center">
+        <h1 className="text-3xl md:text-4xl mb-3"> 지켜줘요, 우리의 눈.</h1>
+        <h1 className="text-3xl md:text-4xl"> 지켜줘요, 화장실 에티켓!</h1>
       </div>
       <div className="flex justify-center">
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2  gap-4">
           {images.map((image, index) => (
             <div key={index} className="flex flex-col items-center">
               <Image {...image} />
