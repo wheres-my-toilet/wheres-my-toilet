@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { PiToiletPaper } from 'react-icons/pi';
+import { AiOutlineLoading } from 'react-icons/ai';
 
 const BookmarkList = () => {
   const { userData } = useLoggedInUserStore();
@@ -18,7 +19,7 @@ const BookmarkList = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
 
-  const { data } = useQuery<Bookmark[]>({
+  const { data, isLoading } = useQuery<Bookmark[]>({
     queryFn: () => getData(USER_ID),
     queryKey: [QUERY_KEY_BOOKMARK, userData?.user_uid],
     enabled: !!USER_ID,
@@ -47,9 +48,9 @@ const BookmarkList = () => {
   };
 
   useEffect(() => {
-    const { user } = JSON.parse(localStorage.getItem('sb-pqqdwvdmqkezxbipblds-auth-token') as string);
+    const userData = JSON.parse(localStorage.getItem('sb-pqqdwvdmqkezxbipblds-auth-token') as string);
 
-    if (!user.id) {
+    if (!userData || !userData.user.id) {
       router.replace('/login_page');
     }
   }, []);
