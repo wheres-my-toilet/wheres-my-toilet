@@ -14,7 +14,7 @@ export const getReviewToiletId = async (id: number): Promise<review_info[]> => {
   if (error) {
     throw error.message;
   }
-  return data;
+  return data as review_info[];
 };
 
 export const getReviewId = async () => {

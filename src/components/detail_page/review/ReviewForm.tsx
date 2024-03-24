@@ -48,6 +48,9 @@ function ReviewForm({ id }: { id: number }) {
 
     if (email) {
       addMutation.mutate(newReview);
+    } else {
+      alert('로그인하고 이용해주세요!');
+      return;
     }
   };
 

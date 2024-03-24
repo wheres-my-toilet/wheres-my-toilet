@@ -8,6 +8,9 @@ function ReviewBookMark({ id }: { id: number }) {
   const { email: user_id } = useLoggedInUserStore((state) => state.userData);
 
   const handleAddBookMark = async () => {
+    if (!user_id) {
+      return;
+    }
     const { data, error } = await supabase
       .from('bookmark')
       .insert([{ toilet_id: id, user_id: user_id }])
@@ -19,6 +22,9 @@ function ReviewBookMark({ id }: { id: number }) {
   };
 
   const handleDeleteBookMark = async () => {
+    if (!user_id) {
+      return;
+    }
     const { error } = await supabase.from('bookmark').delete().eq(user_id, user_id);
     setBookMarkMode((prev) => !prev);
   };
