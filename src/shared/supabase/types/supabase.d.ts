@@ -7,17 +7,17 @@ export type Database = {
         Row: {
           bookmark_id: number;
           toilet_id: number | null;
-          user_id: string | null;
+          user_uid: string | null;
         };
         Insert: {
           bookmark_id?: number;
           toilet_id?: number | null;
-          user_id?: string | null;
+          user_uid?: string | null;
         };
         Update: {
           bookmark_id?: number;
           toilet_id?: number | null;
-          user_id?: string | null;
+          user_uid?: string | null;
         };
         Relationships: [
           {
@@ -31,7 +31,7 @@ export type Database = {
       };
       review_info: {
         Row: {
-          review_content: string | null;
+          review_content: string;
           review_createdat: string;
           review_id: number;
           toilet_clean_rate: number;

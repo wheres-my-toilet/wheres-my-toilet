@@ -17,7 +17,7 @@ function ReviewRate({ id }: { id: number }) {
     <div className="flex flex-col align-middle justify-center items-center">
       <h2 className="text-center text-2xl mb-3 font-medium flex">평점</h2>
       {review && review.length === 0 ? (
-        <p className="w-60 h-14 text-center py-4 bg-black text-white rounded-xl my-4 ml-auto mr-auto">
+        <p className="h-16 text-center py-4 bg-black text-white rounded-xl my-4 ml-auto mr-auto w-96">
           등록된 평점이 없습니다. 첫 평점을 남겨주세요!
         </p>
       ) : (
