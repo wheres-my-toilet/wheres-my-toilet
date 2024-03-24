@@ -10,15 +10,15 @@ import { FaStar } from 'react-icons/fa';
 function ReviewBookMark({ id }: { id: number }) {
   const [bookMarkMode, setBookMarkMode] = useState(false);
   const [toiletLocation, setToiletLocation] = useState<Database['public']['Tables']['toilet_location']['Row']>();
-  const { email: user_id } = useLoggedInUserStore((state) => state.userData);
+  const { user_uid } = useLoggedInUserStore((state) => state.userData);
 
   const handleAddBookMark = async () => {
-    if (!user_id) {
+    if (user_uid === '') {
       return;
     }
     const { data, error } = await supabase
       .from('bookmark')
-      .insert([{ toilet_id: id, user_id: user_id }])
+      .insert([{ toilet_id: id, user_uid: user_uid }])
       .select();
     if (error) {
       throw new Error(error?.message || '에러가 발생했습니다!');
@@ -27,10 +27,10 @@ function ReviewBookMark({ id }: { id: number }) {
   };
 
   const handleDeleteBookMark = async () => {
-    if (!user_id) {
+    if (user_uid === '') {
       return;
     }
-    const { error } = await supabase.from('bookmark').delete().eq(user_id, user_id);
+    const { error } = await supabase.from('bookmark').delete().eq(user_uid, user_uid);
     setBookMarkMode((prev) => !prev);
   };
 
@@ -60,7 +60,7 @@ function ReviewBookMark({ id }: { id: number }) {
       </h2>
       <button
         className={`flex flex-col text-3xl ${bookMarkMode ? 'text-amber-300' : null} -translate-y-1 items-center gap-1`}
-        onClick={bookMarkMode ? handleAddBookMark : handleDeleteBookMark}
+        onClick={bookMarkMode ? handleDeleteBookMark : handleAddBookMark}
       >
         {bookMarkMode ? <FaStar /> : <CiStar />}
         <p className="text-xs text-gray-400">즐겨찾기에 추가하기</p>
