@@ -1,18 +1,36 @@
 'use client';
 
+import { useLoggedInUserStore } from '@/shared/store/LoggedInUser';
 import { Bookmark, ReviewRate, deleteData, getData, getReviewData } from '@/util/bookmark_page/api';
 import { calculateAverage } from '@/util/bookmark_page/calculateRate';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
-import React from 'react';
+import { useRouter } from 'next/navigation';
+import React, { useEffect } from 'react';
 import { PiToiletPaper } from 'react-icons/pi';
 
 const BookmarkList = () => {
-  const USER_ID = '56'; //임시값
+  const { userData } = useLoggedInUserStore();
+  const USER_ID = userData.user_uid;
 
   const QUERY_KEY_BOOKMARK = 'bookmark'; //bookmark 공통 query key
   const QUERY_KEY_REVIEW_RATE = 'reviewRate'; //reviewRate 공통 query key
   const queryClient = useQueryClient();
+  const router = useRouter();
+
+  const { data } = useQuery<Bookmark[]>({
+    queryFn: () => getData(USER_ID),
+    queryKey: [QUERY_KEY_BOOKMARK, userData?.user_uid],
+    enabled: !!USER_ID,
+  });
+
+  const toiletIds = data?.map((bookmark) => bookmark.toilet_id) || [];
+
+  const { data: reviewData } = useQuery<ReviewRate[]>({
+    queryFn: () => getReviewData(toiletIds),
+    queryKey: [QUERY_KEY_REVIEW_RATE, toiletIds],
+    enabled: !!data,
+  });
 
   const mutation = useMutation({
     mutationFn: deleteData,
@@ -21,24 +39,20 @@ const BookmarkList = () => {
     },
   });
 
-  const { data } = useQuery<Bookmark[]>({
-    queryFn: () => getData(USER_ID),
-    queryKey: [QUERY_KEY_BOOKMARK],
-  });
-
-  const toiletIds = data?.map((bookmark) => bookmark.toilet_id) || [];
-  const { data: reviewData } = useQuery<ReviewRate[]>({
-    queryFn: () => getReviewData(toiletIds),
-    queryKey: [QUERY_KEY_REVIEW_RATE],
-    enabled: !!data,
-  });
-
   //북마크 취소
   const handleCancelBookmark = (bookmarkId: number) => {
     if (confirm('즐겨찾기를 취소할까요?')) {
       mutation.mutate(bookmarkId);
     }
   };
+
+  useEffect(() => {
+    const { user } = JSON.parse(localStorage.getItem('sb-pqqdwvdmqkezxbipblds-auth-token') as string);
+
+    if (!user.id) {
+      router.replace('/login_page');
+    }
+  }, []);
 
   return (
     <>
