@@ -63,7 +63,10 @@ export function Form() {
         autoComplete="off"
       />
       <br />
-      <label htmlFor="password">비밀번호</label>
+      <span className="flex space-x-14 items-center">
+        <label htmlFor="password">비밀번호</label>
+        <p className="text-xs underline text-gray-500">비밀번호를 잊으셨나요?</p>
+      </span>
       <input
         id="password"
         type="password"
