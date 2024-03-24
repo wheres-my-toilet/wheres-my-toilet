@@ -1,3 +1,4 @@
+import { Review } from '@/types/home_page/types';
 import type { review_info } from '../../types/reviewType';
 
 export const getRate = (toiletCleanRate: number | null, toiletLocRate: number | null, toiletPopRate: number | null) => {
@@ -76,3 +77,27 @@ export const getReviewContentAverage = (review: review_info[]) => {
 
   return reviewContent(overallRate);
 };
+
+export function getTotalReview(reviews: Review[]) {
+  const totalReviews = reviews.length;
+  let totalPopularity = 0;
+  let totalLocation = 0;
+  let totalCleanliness = 0;
+
+  for (let i = 0; i < totalReviews; i++) {
+    totalPopularity += reviews[i].toilet_pop_rate;
+    totalLocation += reviews[i].toilet_loc_rate;
+    totalCleanliness += reviews[i].toilet_clean_rate;
+  }
+
+  const averagePopularity = totalPopularity / totalReviews;
+  const averageLocation = totalLocation / totalReviews;
+  const averageCleanliness = totalCleanliness / totalReviews;
+
+  return {
+    totalReviews,
+    averagePopularity,
+    averageLocation,
+    averageCleanliness,
+  };
+}

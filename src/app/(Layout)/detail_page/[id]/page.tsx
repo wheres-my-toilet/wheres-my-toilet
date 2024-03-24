@@ -16,19 +16,13 @@ function DetailPage({
 
   return (
     <div className="flex flex-col">
-      <div>
-        <ReviewBookMark id={id} />
-      </div>
+      <ReviewBookMark id={id} />
       <ReviewMap id={id} />
-      <section>
+      <div className="flex flex-col gap-5">
         <ReviewRate id={id} />
-      </section>
-      <div>
         <ReviewForm id={id} />
       </div>
-      <div>
-        <ReviewInfo id={id} />
-      </div>
+      <ReviewInfo id={id} />
     </div>
   );
 }
