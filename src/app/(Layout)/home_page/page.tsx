@@ -8,7 +8,6 @@ import { useUserLocationStore } from '@/shared/store/UserLocation';
 import { NearestLocation } from '@/types/home_page/types';
 import findNearestLocation from '@/util/home_page/findNearestLocation';
 import { Map } from 'react-kakao-maps-sdk';
-
 import Link from 'next/link';
 
 const HomePage = () => {
@@ -32,35 +31,54 @@ const HomePage = () => {
         handleSelectCounty={handleSelectCounty}
       />
 
-      <section className="flex flex-col  md:flex-row mt-20">
-        <div className="border-2 gradient w-full md:w-80 m-4 md:m-12 ">
+      <section className="flex md:flex flex-col md:flex-row justify-between">
+        <div className="mt-10 w-2/1">
           <HomeCategory />
         </div>
 
-        <div className="w-full md:w-2/3 mt-4 md:mt-0">
-          <Map
-            id="map"
-            center={selectState.center}
-            isPanto={selectState.isPanto}
-            className="mx-auto w-full  h-64 md:h-86 rounded-lg"
-            level={selectLevel}
-          >
-            <HomePageMap userLocation={userLocation} nearestLocation={nearestLocation} filterData={filterData} />
-          </Map>
-        </div>
+        <Map
+          id="map"
+          center={selectState.center}
+          isPanto={selectState.isPanto}
+          className="w-full h-screen    "
+          level={selectLevel}
+        >
+          <HomePageMap userLocation={userLocation} nearestLocation={nearestLocation} filterData={filterData} />
+        </Map>
       </section>
 
-      <div className="flex overflow-auto">
+      <div className="flex overflow-x-auto">
         {nearestLocation &&
           nearestLocation.map((location: NearestLocation) => (
-            <figure key={location.toilet_id} className="border-2 m-2 p-2 text-lg">
-              <p className="text-1xl">이름 : {location.toilet_name}</p>
-              <p>주소 : {location.toilet_address}</p>
+            <figure
+              key={location.toilet_id}
+              className="border-2 m-4 p-4 rounded-2xl  border-blue-50 bg-blue-50  shadow-xl h-30"
+            >
               <figcaption>
-                <small>
-                  거리: <b>{Math.floor(location.toilet_distance)}</b>km
-                </small>
-                <Link href={`detail_page/${location.toilet_id}`}>자세히 보기</Link>
+                <p>
+                  <small className="p-2">
+                    <b>이름:</b> {location.toilet_name}
+                  </small>
+                </p>
+                <br />
+                <p>
+                  <small className="p-2 md:p-0 text-sm">
+                    <b>주소:</b>
+                    {location.toilet_address}
+                  </small>
+                </p>
+                <br />
+                <p className="p-2">
+                  <small>
+                    <b>위치:</b>
+                  </small>
+                  <b>{Math.floor(location.toilet_distance)}</b>
+                  km
+                </p>
+
+                <Link href={`detail_page/${location.toilet_id}`} className="pl-40 p-2 hover:font-bold   md:text-sm ">
+                  more
+                </Link>
               </figcaption>
             </figure>
           ))}
