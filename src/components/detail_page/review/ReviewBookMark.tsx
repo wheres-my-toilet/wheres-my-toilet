@@ -60,7 +60,7 @@ function ReviewBookMark({ id }: { id: number }) {
       </h2>
       <button
         className={`flex flex-col text-3xl ${bookMarkMode ? 'text-amber-300' : null} -translate-y-1 items-center gap-1`}
-        onClick={bookMarkMode ? handleAddBookMark : handleDeleteBookMark}
+        onClick={bookMarkMode ? handleDeleteBookMark : handleAddBookMark}
       >
         {bookMarkMode ? <FaStar /> : <CiStar />}
         <p className="text-xs text-gray-400">즐겨찾기에 추가하기</p>
