@@ -8,16 +8,7 @@ import { useUserLocationStore } from '@/shared/store/UserLocation';
 import { NearestLocation } from '@/types/home_page/types';
 import findNearestLocation from '@/util/home_page/findNearestLocation';
 import { Map } from 'react-kakao-maps-sdk';
-import { useEffect, useState } from 'react';
-import { supabase } from '@/shared/supabase/supabase';
 import Link from 'next/link';
-
-type Review_info = {
-  review_id: number;
-  toilet_loc_rate: number;
-  toilet_clean_rate: number | null;
-  toilet_pop_rate: number;
-};
 
 const HomePage = () => {
   const { userLocation } = useUserLocationStore();
@@ -31,15 +22,6 @@ const HomePage = () => {
     (location) => location.toilet_address?.includes(selectSee) && location.toilet_address?.includes(selectGunGue),
   );
 
-  async function getReview() {
-    const { data: review_info, error } = await supabase
-      .from('review_info')
-      .select('review_id , toilet_loc_rate , toilet_clean_rate , toilet_pop_rate , toilet_id  ');
-  }
-  useEffect(() => {
-    getReview();
-  }, []);
-
   return (
     <>
       <HomeSelectForm
@@ -49,44 +31,58 @@ const HomePage = () => {
         handleSelectCounty={handleSelectCounty}
       />
 
+      <section className="flex md:flex flex-col md:flex-row justify-between">
+        <div className="mt-10 w-2/1">
+          <HomeCategory />
+        </div>
 
-
-
-
-<section className="flex flex-col  md:flex-row mt-20">
-  <div className="border-2 gradient w-full md:w-80 m-4 md:m-12 ">
-  <HomeCategory />
-  </div>
-
-    <div className="w-full md:w-2/3 mt-4 md:mt-0">
-    <Map
+        <Map
           id="map"
           center={selectState.center}
           isPanto={selectState.isPanto}
-          className="mx-auto w-full  h-64 md:h-86 rounded-lg"
+          className="w-full h-screen   "
           level={selectLevel}
-        > 
+        >
           <HomePageMap userLocation={userLocation} nearestLocation={nearestLocation} filterData={filterData} />
         </Map>
-        </div>
       </section>
 
-     <div className='flex overflow-auto'>
-     {nearestLocation &&
-        nearestLocation.map((location: NearestLocation) => (
-          <Link href={`detail_page/${location.toilet_id}`}>
-          <figure key={location.toilet_id} className='border-2 m-2 p-2 text-lg'>
-          <p className='text-1xl'>이름 : {location.toilet_name}</p>
-          <p>주소 : {location.toilet_address}</p>
-            <figcaption>
-              <small>거리: <b>{Math.floor(location.toilet_distance)}</b>km</small>
+      <div className="flex overflow-x-auto">
+        {nearestLocation &&
+          nearestLocation.map((location: NearestLocation) => (
+            <figure
+              key={location.toilet_id}
+              className="border-2 m-4 p-4 rounded-2xl  border-blue-50 bg-blue-50  shadow-xl h-30"
+            >
+              <figcaption>
+                <p>
+                  <small className="p-2">
+                    <b>이름:</b> {location.toilet_name}
+                  </small>
+                </p>
+                <br />
+                <p>
+                  <small className="p-2 md:p-0 text-sm">
+                    <b>주소:</b>
+                    {location.toilet_address}
+                  </small>
+                </p>
+                <br />
+                <p className="p-2">
+                  <small>
+                    <b>위치:</b>
+                  </small>
+                  <b>{Math.floor(location.toilet_distance)}</b>
+                  km
+                </p>
 
-            </figcaption>
-          </figure>
-          </Link>
-        ))}
-     </div>
-     
+                <Link href={`detail_page/${location.toilet_id}`} className="pl-40 p-2 hover:font-bold   md:text-sm ">
+                  more
+                </Link>
+              </figcaption>
+            </figure>
+          ))}
+      </div>
     </>
   );
 };

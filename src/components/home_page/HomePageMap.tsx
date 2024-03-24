@@ -18,12 +18,11 @@ function HomePageMap({ filterData, nearestLocation, userLocation }: HomePageType
         />
       ))}
 
-      <MapMarker
-        position={userLocation} >
-          <div >
-            <b>it's me</b>
-          </div>
-        </MapMarker>
+      <MapMarker position={userLocation}>
+        <div>
+          <b>its me</b>
+        </div>
+      </MapMarker>
 
       {filterData?.map((location) => (
         <MapMarker
