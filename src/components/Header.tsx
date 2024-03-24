@@ -10,16 +10,40 @@ import { getAddress } from '@/util/header/getAddress';
 
 import logoImage from '../assets/images/wheres_my_toilet1_icon.png';
 import { LuLogIn } from 'react-icons/lu';
+import { IoLogOutOutline } from 'react-icons/io5';
 import { ssronet } from '@/shared/fonts/font';
+import { supabase } from '@/shared/supabase/supabase';
+import { useQuery } from '@tanstack/react-query';
+import { getUser } from '@/api/reviewQuery/queryFunction';
+import { useLogoutMutation } from '@/util/header/logoutQuery';
+import { useLoggedInUserStore } from '@/shared/store/LoggedInUser';
 
 const Header = () => {
   const [userAddress, setUserAddress] = useState('');
   const { userLocation, setLocation } = useUserLocationStore();
+  const logoutMutation = useLogoutMutation();
+  const { setUserData } = useLoggedInUserStore();
+
+  const { data } = useQuery({
+    queryKey: ['user'],
+    queryFn: getUser,
+  });
+
+  const email = data?.user_metadata.email;
 
   //현재 좌표 가져오기
   const handleGetCurrentPosition = () => {
     navigator.geolocation.getCurrentPosition((position) => {
       setLocation({ lat: position.coords.latitude, lng: position.coords.longitude });
+    });
+  };
+
+  const handleClickLogout = async () => {
+    logoutMutation.mutate();
+    setUserData({
+      email: '',
+      user_uid: '',
+      nickname: 'poopy',
     });
   };
 
@@ -53,10 +77,24 @@ const Header = () => {
         </Link>
       </div>
       <div className="flex flex-row items-center basis-1/4 min-w-20 justify-center rounded-lg h-12 ">
-        <Link className=" text-center flex flex-row gap-1 items-center" href="/login_page">
-          로그인
-          <LuLogIn size={20} />
-        </Link>
+        {email ? (
+          <>
+            <button
+              className=" text-center flex flex-row gap-1 items-center cursor-pointer"
+              onClick={handleClickLogout}
+            >
+              로그아웃
+              <IoLogOutOutline size={20} />
+            </button>
+          </>
+        ) : (
+          <>
+            <Link className=" text-center flex flex-row gap-1 items-center" href="/login_page">
+              로그인
+              <LuLogIn size={20} />
+            </Link>
+          </>
+        )}
       </div>
     </header>
   );

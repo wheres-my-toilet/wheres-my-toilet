@@ -40,7 +40,7 @@ const HomePage = () => {
           id="map"
           center={selectState.center}
           isPanto={selectState.isPanto}
-          className="w-full h-screen    "
+          className="w-full h-screen   "
           level={selectLevel}
         >
           <HomePageMap userLocation={userLocation} nearestLocation={nearestLocation} filterData={filterData} />

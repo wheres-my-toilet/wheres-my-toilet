@@ -46,7 +46,7 @@ function ReviewForm({ id }: { id: number }) {
       toilet_pop_rate: toiletRate.popRate,
     };
 
-    if (email) {
+    if (email !== '') {
       addMutation.mutate(newReview);
     }
   };
