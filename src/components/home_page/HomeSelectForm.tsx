@@ -84,7 +84,6 @@ function HomeSelectForm({ selectSee, selectGunGue, handleSelectCity, handleSelec
                   <option value="동두천시">동두천시</option>
                   <option value="안산시">안산시</option>
                   <option value="과천시">과천시</option>
-                  <option value="남양주시">남양주시</option>
                   <option value="안양시">안양시</option>
                   <option value="부천시">부천시</option>
                   <option value="광명시">광명시</option>
