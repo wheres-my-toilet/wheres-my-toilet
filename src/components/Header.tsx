@@ -56,19 +56,15 @@ const Header = () => {
   }, []);
 
   return (
-    <header className="flex p-5 items-center">
-      <button
-        type="button"
-        className="flex items-center p-2 px-3 rounded-lg max-w-40 text-sm"
-        onClick={handleGetCurrentPosition}
-      >
+    <header className="flex p-4 items-center justify-between flex-wrap">
+      <button type="button" className="flex items-center max-w-40 text-sm order-1" onClick={handleGetCurrentPosition}>
         <BiCurrentLocation size="25" color="black" />
         <div className={`flex flex-col min-w-20 pl-1 text-xs text-left`}>
           현재 나의 위치{' '}
           <span className="text-sm font-semibold">{userAddress ? <p>{userAddress}</p> : <p>찾는중</p>}</span>
         </div>
       </button>
-      <div className="min-w-40 basis-3/4">
+      <div className="min-w-40 order-3 md:order-2 w-full md:w-auto text-center">
         <Link href="/home_page">
           <div className="flex flex-col justify-center items-center text-center">
             <Image src={logoImage} alt="똥간은 어디에?" width={24} height={34} />
@@ -76,7 +72,7 @@ const Header = () => {
           </div>
         </Link>
       </div>
-      <div className="flex flex-row items-center basis-1/4 min-w-20 justify-center rounded-lg h-12 ">
+      <div className="order-2 md:order-3 text-sm">
         {email ? (
           <>
             <button
