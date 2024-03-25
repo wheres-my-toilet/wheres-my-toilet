@@ -64,7 +64,7 @@ const Header = () => {
       >
         <BiCurrentLocation size="25" color="black" />
         <div className={`flex flex-col min-w-20 pl-1 text-xs text-left`}>
-          현재 나의 위치{' '}
+          현재 나의 위치
           <span className="text-sm font-semibold">{userAddress ? <p>{userAddress}</p> : <p>찾는중</p>}</span>
         </div>
       </button>
