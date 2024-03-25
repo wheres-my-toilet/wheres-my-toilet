@@ -31,56 +31,43 @@ const HomePage = () => {
         handleSelectCounty={handleSelectCounty}
       />
 
-      <section className="flex md:flex flex-col md:flex-row justify-between">
-        <div className="mt-10 w-2/1">
-          <HomeCategory />
+      <section className="flex md:flex flex-col sm:flex-row justify-between items-center ">
+        <div className="flex justify-start ">
+          <div className="border-2 m-2 p-10 w-auto rounded-md bg-slate-100 ">
+            <HomeCategory />
+          </div>
         </div>
 
         <Map
           id="map"
           center={selectState.center}
           isPanto={selectState.isPanto}
-          className="w-full h-screen   "
+          className="w-10/12 h-96 m-10 rounded"
           level={selectLevel}
         >
           <HomePageMap userLocation={userLocation} nearestLocation={nearestLocation} filterData={filterData} />
         </Map>
       </section>
 
-      <div className="flex overflow-x-auto">
+      <div className="flex flex-col">
         {nearestLocation &&
           nearestLocation.map((location: NearestLocation) => (
-            <figure
-              key={location.toilet_id}
-              className="border-2 m-4 p-4 rounded-2xl  border-blue-50 bg-blue-50  shadow-xl h-30"
-            >
-              <figcaption>
-                <p>
-                  <small className="p-2">
-                    <b>이름:</b> {location.toilet_name}
-                  </small>
+            <div key={location.toilet_id} className="m-4 rounded-xl overflow-hidden shadow-lg bg-white mb-6">
+              <div className="px-6 py-4">
+                <div className="font-bold text-lg mb-2 text-blue-500">{location.toilet_name}</div>
+                <p className="text-gray-700 text-base">
+                  <b>주소:</b> {location.toilet_address}
                 </p>
-                <br />
-                <p>
-                  <small className="p-2 md:p-0 text-sm">
-                    <b>주소:</b>
-                    {location.toilet_address}
-                  </small>
+                <p className="text-gray-700 text-base">
+                  <b>위치:</b> {Math.floor(location.toilet_distance)} km
                 </p>
-                <br />
-                <p className="p-2">
-                  <small>
-                    <b>위치:</b>
-                  </small>
-                  <b>{Math.floor(location.toilet_distance)}</b>
-                  km
-                </p>
-
-                <Link href={`detail_page/${location.toilet_id}`} className="pl-40 p-2 hover:font-bold   md:text-sm ">
+              </div>
+              <div className="px-6 py-4">
+                <Link href={`detail_page/${location.toilet_id}`} className="text-blue-500 hover:font-bold text-sm">
                   more
                 </Link>
-              </figcaption>
-            </figure>
+              </div>
+            </div>
           ))}
       </div>
     </>

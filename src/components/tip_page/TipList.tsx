@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import TipCard from './TipCard';
 import TipModal from './TipModal';
 import { getTips } from '@/util/tip_page/api';
@@ -17,19 +17,20 @@ export type Tip = {
 const TipList = () => {
   const [selectedTip, setSelectedTip] = useState<Tip | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // 데이터 세팅
+
   const { data, isLoading, isError } = useQuery({
     queryKey: ['tips'],
     queryFn: getTips,
   });
 
-  // 가로 스크롤 관련 로직
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
 
   const handleScroll = (direction: 'left' | 'right'): void => {
     const container = scrollContainerRef.current;
     if (container) {
-      const scrollAmount = container.offsetWidth * 0.98;
+      // Assume each card has margin-right of 16px for example
+      const cardWidth = container.firstChild ? (container.firstChild as HTMLElement).offsetWidth + 16 : 0;
+      const scrollAmount = cardWidth;
       container.scrollTo({
         left: direction === 'left' ? container.scrollLeft - scrollAmount : container.scrollLeft + scrollAmount,
         behavior: 'smooth',
@@ -47,15 +48,16 @@ const TipList = () => {
   };
 
   if (isLoading) {
-    return <div>로딩중</div>;
+    return <div>Loading...</div>;
   }
+
   if (isError) {
-    return <div>에러 발생</div>;
+    return <div>Error occurred</div>;
   }
 
   return (
     <div>
-      <div className="m-full flex items-center justify-center gap-[70%]">
+      <div className="m-full flex items-center justify-center gap-[27%]">
         <button onClick={() => handleScroll('left')} className="mr-2 text-4xl">
           {'←'}
         </button>
@@ -63,14 +65,19 @@ const TipList = () => {
           {'→'}
         </button>
       </div>
-      <div className="flex flex-wrap justify-center items-center mt-8">
-        <div className="w-full md:w-4/5 lg:w-3/4 flex overflow-x-hidden" ref={scrollContainerRef}>
+      <div className="flex justify-center items-center mt-8">
+        <div className="w-full md:w-4/5 lg:w-3/4 flex overflow-x-auto snap-x snap-mandatory" ref={scrollContainerRef}>
           {data?.map((item) => (
-            <TipCard key={item.id} tip={item} handleCardClick={() => handleCardClick(item)} />
+            <div
+              className="snap-start shrink-0 w-full flex justify-center md:min-w-[50%] lg:min-w-[calc(50%-8px)] mx-2"
+              key={item.id}
+            >
+              <TipCard tip={item} handleCardClick={() => handleCardClick(item)} />
+            </div>
           ))}
         </div>
-        {isModalOpen && selectedTip && <TipModal tip={selectedTip} handleCloseModal={handleCloseModal} />}
       </div>
+      {isModalOpen && selectedTip && <TipModal tip={selectedTip} handleCloseModal={handleCloseModal} />}
     </div>
   );
 };
